@@ -1,0 +1,153 @@
+/* Styling Utama Landing Page GKJ Kotagede */
+.gkj-landing {
+    font-family: 'Georgia', serif;
+    background-color: #fcfbfa;
+    color: #2c2c2c;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Navbar */
+.gkj-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 60px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+.navbar-icon {
+    font-size: 1.2rem;
+}
+
+.navbar-menu {
+    display: flex;
+    gap: 30px;
+}
+
+.navbar-menu a {
+    text-decoration: none;
+    color: #444;
+    font-size: 0.9rem;
+    font-family: sans-serif;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.navbar-menu a:hover {
+    color: #d35400;
+}
+
+/* Hero Section (Menggunakan logo_gkjkg.jpg sebagai background penuh) */
+.gkj-hero {
+    flex: 1;
+    background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+        url('../../assets/logo_gkjkg.jpg') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    padding: 80px 10%;
+    color: white;
+}
+
+.hero-content {
+    max-width: 700px;
+}
+
+.hero-date {
+    font-family: sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    color: #f39c12;
+    font-weight: bold;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.hero-title {
+    font-size: 3.2rem;
+    font-weight: normal;
+    line-height: 1.2;
+    margin-bottom: 15px;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    font-family: sans-serif;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+/* Tombol Dashboard */
+.dashboard-btn {
+    background-color: #d35400;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.dashboard-btn:hover {
+    background-color: #b94600;
+    transform: translateY(-2px);
+}
+
+/* Statistik Section */
+.gkj-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    background-color: #ffffff;
+    border-top: 1px solid #eaeaea;
+    padding: 30px 40px;
+    text-align: center;
+    gap: 20px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.stat-icon {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    background: #f4f4f4;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.stat-label {
+    font-family: sans-serif;
+    font-size: 0.8rem;
+    color: #777;
+}
+
+.stat-value {
+    font-family: sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+}
