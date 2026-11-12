@@ -44,15 +44,37 @@ export const profileSections = [
 ]
 
 export function createDemoData() {
+  const currentYear = new Date().getFullYear()
   const makeMember = (id, name, nik, birth, gender, kk, userId) => ({
     id, nik, no_kk: kk, id_user: userId, id_wil: 'WIL-01', nama_wilayah: 'Wilayah 1',
     nama_lengkap: name, jenis_kelamin: gender, tmpt_lhr: 'Yogyakarta', tgl_lhr: birth,
-    gol_darah: 'O', status_jemaat: 'Warga jemaat', foto: '', no_whatsapp: '',
+    gol_darah: 'O', status_jemaat: 'Warga jemaat', foto: '', no_whatsapp: '081234567890',
     user: { id_user: userId, email: '', role: 'jemaat' },
     gerejawi: { id_gereja: `GRJ-${id}`, nik, status_baptis: 'Sudah', tgl_baptis: '', status_sidi: 'Sudah', tgl_sidi: '', status_pernikahan: 'Menikah', tgl_pernikahan: '', status_keaktifan: 'Aktif' },
-    pendidikan: { id_pendidikan: `PDK-${id}`, nik, pendidikan_terakhir: 'D4 / S1', nama_sekolah: '', thn_lulus: '' },
-    pekerjaan: { id_pekerjaan: `PKJ-${id}`, nik, pekerjaan: '', instansi: '', jabatan: '', penghasilan: '' },
-    riwayat_pelayanan: [], dokumen: [], persembahan_bulanan: [],
+    pendidikan: { id_pendidikan: `PDK-${id}`, nik, pendidikan_terakhir: 'D4 / S1', nama_sekolah: 'Universitas di Yogyakarta', thn_lulus: '' },
+    pekerjaan: { id_pekerjaan: `PKJ-${id}`, nik, pekerjaan: 'Guru', instansi: 'Sekolah di Yogyakarta', jabatan: 'Guru kelas', penghasilan: '4500000' },
+    riwayat_pelayanan: [
+      { id_pelayanan: `PLY-${id}-1`, nik, nama_pelayanan: 'Paduan suara', thn_mulai: '2019', thn_berakhir: '' },
+      { id_pelayanan: `PLY-${id}-2`, nik, nama_pelayanan: 'Guru SMG (Sekolah Minggu)', thn_mulai: '2021', thn_berakhir: '' }
+    ],
+    dokumen: [
+      { id_dokumen: `DOK-${id}-1`, nik, jenis_dokumen: 'KTP', file_path: 'ktp_jemaat.pdf' },
+      { id_dokumen: `DOK-${id}-2`, nik, jenis_dokumen: 'Kartu Keluarga', file_path: 'kartu_keluarga.pdf' },
+    ],
+    persembahan_bulanan: [
+      { id_persembahan: `PRB-${id}-01`, nik, tahun: currentYear, bulan: 1, jml_nominal: 100000, status_byr: 'LUNAS' },
+      { id_persembahan: `PRB-${id}-02`, nik, tahun: currentYear, bulan: 2, jml_nominal: 100000, status_byr: 'LUNAS' },
+      { id_persembahan: `PRB-${id}-03`, nik, tahun: currentYear, bulan: 3, jml_nominal: 100000, status_byr: 'LUNAS' },
+      { id_persembahan: `PRB-${id}-04`, nik, tahun: currentYear, bulan: 4, jml_nominal: 100000, status_byr: 'LUNAS' },
+      { id_persembahan: `PRB-${id}-05`, nik, tahun: currentYear, bulan: 5, jml_nominal: 100000, status_byr: 'LUNAS' },
+      { id_persembahan: `PRB-${id}-06`, nik, tahun: currentYear, bulan: 6, jml_nominal: 100000, status_byr: 'LUNAS' },
+      { id_persembahan: `PRB-${id}-07`, nik, tahun: currentYear, bulan: 7, jml_nominal: 100000, status_byr: 'LUNAS' },
+      { id_persembahan: `PRB-${id}-08`, nik, tahun: currentYear, bulan: 8, jml_nominal: 100000, status_byr: 'LUNAS' },
+      { id_persembahan: `PRB-${id}-09`, nik, tahun: currentYear, bulan: 9, jml_nominal: 100000, status_byr: 'LUNAS' },
+      { id_persembahan: `PRB-${id}-10`, nik, tahun: currentYear, bulan: 10, jml_nominal: 100000, status_byr: 'LUNAS' },
+      { id_persembahan: `PRB-${id}-11`, nik, tahun: currentYear, bulan: 11, jml_nominal: 100000, status_byr: 'BELUM' },
+      { id_persembahan: `PRB-${id}-12`, nik, tahun: currentYear, bulan: 12, jml_nominal: 100000, status_byr: 'BELUM' },
+    ],
   })
   const mother = makeMember('JMT-001', 'Maria Kristina Wibowo', '0000000000000001', '1992-05-12', 'Perempuan', '0000000000000101', 'USR-001')
   mother.user.email = 'maria@example.com'
@@ -61,24 +83,59 @@ export function createDemoData() {
   mother.pekerjaan.jabatan = 'Guru kelas'
   mother.pendidikan.nama_sekolah = 'Universitas di Yogyakarta'
   mother.pendidikan.thn_lulus = '2014'
+  mother.gerejawi.tgl_baptis = '2005-06-12'
+  mother.gerejawi.tgl_sidi = '2010-04-18'
   mother.gerejawi.tgl_pernikahan = '2015-06-20'
   mother.riwayat_pelayanan = [{ id_pelayanan: 'PLY-001', nik: mother.nik, nama_pelayanan: 'Paduan suara', thn_mulai: '2019', thn_berakhir: '' }]
   const father = makeMember('JMT-002', 'Daniel Wibowo', '0000000000000002', '1990-08-17', 'Laki-laki', mother.no_kk, 'USR-002')
   father.pekerjaan.pekerjaan = 'Wiraswasta'
+  father.no_whatsapp = '081298765432'
   const child = makeMember('JMT-003', 'Naomi Wibowo', '0000000000000003', '2017-03-09', 'Perempuan', mother.no_kk, 'USR-003')
   child.gerejawi.status_pernikahan = 'Belum menikah'
   child.gerejawi.status_sidi = 'Belum'
   child.pendidikan.pendidikan_terakhir = 'SD'
+  child.pekerjaan.pekerjaan = 'Pelajar'
   const outsider = makeMember('JMT-004', 'Anggota keluarga lain', '0000000000000004', '1988-10-03', 'Laki-laki', '0000000000000202', 'USR-004')
+  
+  // Data akun jemaat sesuai referensi tangkapan layar 2.jpg
+  const yohanes = makeMember('JMT-005', 'Yohanes Thiapok Setiawan', '9102010106050005', '2005-05-01', 'Laki-laki', '9102010106050105', 'USR-005')
+  yohanes.user.email = 'yohanesthiapok@gmail.com'
+  yohanes.no_whatsapp = '081343446030'
+  yohanes.pekerjaan.pekerjaan = 'Mahasiswa'
+  yohanes.pekerjaan.instansi = 'Universitas di Yogyakarta'
+  yohanes.pekerjaan.jabatan = 'Mahasiswa'
+  yohanes.gerejawi.status_pernikahan = 'Belum menikah'
+  yohanes.gerejawi.status_sidi = 'Sudah'
+  yohanes.pendidikan.pendidikan_terakhir = 'SMA / SMK'
+  yohanes.pendidikan.nama_sekolah = 'SMA di Yogyakarta'
+  yohanes.pendidikan.thn_lulus = '2023'
+
   const makeFamily = (no_kk, name, address) => ({
     no_kk, nama_kepala_keluarga: name, alamat: address, rt: '04', rw: '02',
     desa: 'Prenggan', dusun: 'Prenggan', kecamatan: 'Kotagede', kabupaten: 'Yogyakarta',
     provinsi: 'DI Yogyakarta', kode_pos: '55172',
   })
   return {
-    members: [mother, father, child, outsider],
-    families: [makeFamily(mother.no_kk, father.nama_lengkap, 'Jl. Kemasan No. 12'), makeFamily(outsider.no_kk, outsider.nama_lengkap, 'Jl. Contoh No. 8')],
+    members: [mother, father, child, outsider, yohanes],
+    families: [
+      makeFamily(mother.no_kk, father.nama_lengkap, 'Jl. Kemasan No. 12'),
+      makeFamily(outsider.no_kk, outsider.nama_lengkap, 'Jl. Contoh No. 8'),
+      makeFamily(yohanes.no_kk, yohanes.nama_lengkap, 'Jl. Mondorakan No. 45')
+    ],
   }
+}
+
+export function searchJemaatRestricted(members, query) {
+  if (!query || !query.trim()) return []
+  const q = query.toLowerCase().trim()
+  return members
+    .filter((m) => m.nama_lengkap.toLowerCase().includes(q) || (m.nama_wilayah && m.nama_wilayah.toLowerCase().includes(q)))
+    .map((m) => ({
+      nama_lengkap: m.nama_lengkap,
+      nama_wilayah: m.nama_wilayah,
+      status_jemaat: m.status_jemaat,
+    }))
+    .slice(0, 15)
 }
 
 export function getValue(record, key) {
@@ -91,7 +148,16 @@ export function datePassword(date) {
 }
 
 export function authenticateDemo(members, nik, password) {
-  return members.find((member) => member.user.role === 'jemaat' && member.nik === nik.trim() && datePassword(member.tgl_lhr) === password) ?? null
+  const cleanNik = (nik || '').trim()
+  const cleanPw = (password || '').trim().replace(/-/g, '')
+  return members.find((member) => {
+    if (member.user.role !== 'jemaat') return false
+    if (member.nik !== cleanNik) return false
+    const expected = datePassword(member.tgl_lhr)
+    const [y, m, d] = member.tgl_lhr.split('-')
+    const yyyymmdd = `${y}${m}${d}`
+    return cleanPw === expected || cleanPw === yyyymmdd || cleanPw === member.tgl_lhr
+  }) ?? null
 }
 
 export function familyMembers(members, actor) {
