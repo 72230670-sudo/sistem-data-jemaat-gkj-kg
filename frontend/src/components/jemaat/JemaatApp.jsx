@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import logo from '../../assets/logo_gkjkg.jpg'
 import {
   ageFromDate, authenticateDemo, createDemoData, datePassword, familyMembers,
-  formatDate, getValue, localCalendarDate,
+  formatDate, getValue, localCalendarDate, profileSections,
   updateMemberPhoto, updateMemberSection,
 } from '../../lib/jemaatData.js'
 import './JemaatApp.css'
@@ -392,7 +392,25 @@ export default function JemaatApp() {
         ? 'kontak'
         : 'identitas'
 
-      const draft = { [modalTarget.key]: modalTarget.value }
+      const section = profileSections.find((item) => item.id === sectionId)
+      const currentRecord = modalTarget.isFamily ? family : member
+      // Muat nilai existing dari section agar field wajib lain (seperti nama_lengkap) tidak kosong
+      const draft = Object.fromEntries(
+        section.fields.map((field) => [field.key, getValue(currentRecord, field.key)])
+      )
+      draft[modalTarget.key] = modalTarget.value
+
+      // Penyesuaian otomatis dependensi tanggal gerejawi jika diubah ke 'Belum'
+      if (modalTarget.key === 'gerejawi.status_baptis' && modalTarget.value === 'Belum') {
+        draft['gerejawi.tgl_baptis'] = ''
+      }
+      if (modalTarget.key === 'gerejawi.status_sidi' && modalTarget.value === 'Belum') {
+        draft['gerejawi.tgl_sidi'] = ''
+      }
+      if (modalTarget.key === 'gerejawi.status_pernikahan' && modalTarget.value === 'Belum menikah') {
+        draft['gerejawi.tgl_pernikahan'] = ''
+      }
+
       const updated = updateMemberSection(data, actorId, selectedId, sectionId, draft)
       setData(updated)
       setModalOpen(false)
@@ -621,6 +639,16 @@ export default function JemaatApp() {
                       <strong className="jkn-row-val jkn-red">{member.nik}</strong>
                     </div>
                     <span className="jkn-tag-locked"><Icon name="lock" size={12} /> ID/NIK Terkunci</span>
+                  </div>
+
+                  {/* Nama Lengkap */}
+                  <div className="jkn-web-row" onClick={() => openEditModal('nama_lengkap', 'Nama Lengkap', member.nama_lengkap)}>
+                    <div className="jkn-row-icon"><Icon name="person" /></div>
+                    <div className="jkn-row-body">
+                      <span className="jkn-row-label">Nama Lengkap</span>
+                      <strong className="jkn-row-val">{member.nama_lengkap}</strong>
+                    </div>
+                    <span className="jkn-btn-row-edit">Ubah ›</span>
                   </div>
 
                   {/* Status Jemaat */}
