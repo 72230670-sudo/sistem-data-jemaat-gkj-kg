@@ -4,26 +4,21 @@ import {
   addMember,
   deleteFamily,
   deleteMember,
-  generateWhatsAppMessage,
-  generateWhatsAppUrl,
   loadMasterData,
-  saveMasterData,
   updateFamily,
   updateMember,
 } from '../../lib/superAdminData.js'
 import './SuperAdminApp.css'
 
 import DaftarJemaatView from './DaftarJemaatView.jsx'
-import DashboardView from './DashboardView.jsx'
 import DataKeluargaView from './DataKeluargaView.jsx'
 import DetailJemaatModal from './DetailJemaatModal.jsx'
 import JemaatFormModal from './JemaatFormModal.jsx'
-import KelolaPenggunaView from './KelolaPenggunaView.jsx'
-import TemplateWAView from './TemplateWAView.jsx'
 
 export default function SuperAdminApp({ onSwitchRole }) {
   const [data, setData] = useState(() => loadMasterData())
-  const [activeMenu, setActiveMenu] = useState('dashboard') // 'dashboard' | 'daftar' | 'keluarga' | 'wa' | 'pengguna'
+  // Hanya 2 menu utama sesuai tugas: 'daftar' (Data Jemaat) & 'keluarga' (Data Keluarga)
+  const [activeMenu, setActiveMenu] = useState('daftar')
 
   // Modal State
   const [formModalOpen, setFormModalOpen] = useState(false)
@@ -31,11 +26,8 @@ export default function SuperAdminApp({ onSwitchRole }) {
   const [viewingMember, setViewingMember] = useState(null)
   const [deletingMember, setDeletingMember] = useState(null)
 
-  // WhatsApp send preview modal state
-  const [waModalData, setWaModalData] = useState(null) // { member, type, text, phone }
-
   // Toast State
-  const [toast, setToast] = useState(null) // { message, type }
+  const [toast, setToast] = useState(null)
 
   function showToast(message, type = 'success') {
     setToast({ message, type })
@@ -65,7 +57,7 @@ export default function SuperAdminApp({ onSwitchRole }) {
         showToast(`Data jemaat ${payload.nama_lengkap} berhasil diperbarui.`)
       } else {
         updatedData = addMember(currentData, payload)
-        showToast(`Jemaat baru ${payload.nama_lengkap} berhasil ditambahkan.`)
+        showToast(`Data jemaat baru ${payload.nama_lengkap} berhasil ditambahkan.`)
       }
       setData(updatedData)
       setEditingMember(null)
@@ -118,75 +110,9 @@ export default function SuperAdminApp({ onSwitchRole }) {
     setFormModalOpen(true)
   }
 
-  // Handle Template WA
-  function handleSaveTemplates(newTemplates) {
-    const updated = { ...data, wa_templates: newTemplates }
-    setData(updated)
-    saveMasterData(updated)
-    showToast('Template ucapan WhatsApp berhasil disimpan.')
-  }
-
-  function handleResetTemplates() {
-    const updated = { ...data, wa_templates: null }
-    setData(updated)
-    saveMasterData(updated)
-    showToast('Template WhatsApp dikembalikan ke bawaan.')
-  }
-
-  // Handle Send WA Dialog
-  function handleTriggerWA(member, type = 'lahir') {
-    const template = type === 'lahir' ? data.wa_templates?.ultah_lahir : data.wa_templates?.ultah_nikah
-    const text = generateWhatsAppMessage(template, member, type)
-    setWaModalData({
-      member,
-      type,
-      text,
-      phone: member.no_whatsapp || '',
-    })
-  }
-
-  function handleSendWA() {
-    if (!waModalData?.phone) {
-      alert('Nomor WhatsApp jemaat belum terdaftar.')
-      return
-    }
-    const url = generateWhatsAppUrl(waModalData.phone, waModalData.text)
-    window.open(url, '_blank', 'noopener,noreferrer')
-    setWaModalData(null)
-    showToast('Membuka tautan kirim pesan WhatsApp.')
-  }
-
-  // Handle User Role
-  function handleUpdateUserRole(id_user, newRole) {
-    const updatedUsers = (data.users || []).map((u) =>
-      u.id_user === id_user ? { ...u, role: newRole } : u
-    )
-    const updatedMembers = data.members.map((m) => {
-      if (m.user && m.user.id_user === id_user) {
-        return {
-          ...m,
-          user: { ...m.user, role: newRole },
-        }
-      }
-      return m
-    })
-    const updated = { ...data, users: updatedUsers, members: updatedMembers }
-    setData(updated)
-    saveMasterData(updated)
-    showToast(`Role pengguna diperbarui menjadi "${newRole}".`)
-  }
-
-  function handleAddUser(newUser) {
-    const updatedUsers = [...(data.users || []), newUser]
-    const updated = { ...data, users: updatedUsers }
-    setData(updated)
-    saveMasterData(updated)
-    showToast(`Akun pengguna ${newUser.email} berhasil dibuat.`)
-  }
-
   return (
     <div className="sa-app-layout">
-      {/* SIDEBAR NAVIGATION SESUAI TAMPILAN SISTEM */}
+      {/* SIDEBAR NAVIGATION: HANYA DATA JEMAAT & DATA KELUARGA */}
       <aside className="sa-sidebar">
         <div className="sa-sidebar-header">
           <div className="sa-sidebar-logo">⛪</div>
@@ -198,21 +124,12 @@ export default function SuperAdminApp({ onSwitchRole }) {
 
         <nav className="sa-sidebar-nav">
           <button
-            className={`sa-nav-item ${activeMenu === 'dashboard' ? 'active' : ''}`}
-            type="button"
-            onClick={() => setActiveMenu('dashboard')}
-          >
-            <span className="sa-nav-icon">📊</span>
-            <span>Dashboard</span>
-          </button>
-
-          <button
             className={`sa-nav-item ${activeMenu === 'daftar' ? 'active' : ''}`}
             type="button"
             onClick={() => setActiveMenu('daftar')}
           >
             <span className="sa-nav-icon">👥</span>
-            <span>Daftar Jemaat</span>
+            <span>Data Jemaat</span>
           </button>
 
           <button
@@ -235,24 +152,6 @@ export default function SuperAdminApp({ onSwitchRole }) {
             <span className="sa-nav-icon">🏠</span>
             <span>Data Keluarga</span>
           </button>
-
-          <button
-            className={`sa-nav-item ${activeMenu === 'wa' ? 'active' : ''}`}
-            type="button"
-            onClick={() => setActiveMenu('wa')}
-          >
-            <span className="sa-nav-icon">💬</span>
-            <span>Template WA</span>
-          </button>
-
-          <button
-            className={`sa-nav-item ${activeMenu === 'pengguna' ? 'active' : ''}`}
-            type="button"
-            onClick={() => setActiveMenu('pengguna')}
-          >
-            <span className="sa-nav-icon">⚙️</span>
-            <span>Kelola Pengguna</span>
-          </button>
         </nav>
 
         {/* SIDEBAR FOOTER */}
@@ -268,9 +167,9 @@ export default function SuperAdminApp({ onSwitchRole }) {
             <button
               className="sa-btn-subtle"
               type="button"
-              onClick={() => showToast('Fitur ganti kata sandi siap diintegrasikan dengan Supabase Auth.')}
+              onClick={() => showToast('Sesi aktif sebagai Super Administrator GKJ Kotagede.')}
             >
-              🔑 Sandi
+              🔒 Super Admin
             </button>
             <button
               className="sa-btn-subtle"
@@ -292,18 +191,14 @@ export default function SuperAdminApp({ onSwitchRole }) {
         <header className="sa-topbar">
           <div className="sa-page-title">
             <h1>
-              {activeMenu === 'dashboard' && 'Ringkasan Dashboard'}
               {activeMenu === 'daftar' && 'Master Data Jemaat'}
               {activeMenu === 'keluarga' && 'Pengelolaan Master Data Keluarga'}
-              {activeMenu === 'wa' && 'Kelola Template Pesan WhatsApp'}
-              {activeMenu === 'pengguna' && 'Kelola Hak Akses Pengguna'}
             </h1>
             <p>
-              {activeMenu === 'dashboard' && 'Statistik demografi, ulang tahun hari ini, dan keaktifan jemaat GKJ Kotagede'}
-              {activeMenu === 'daftar' && 'CRUD Data Identitas, Gerejawi, Pendidikan, dan Pekerjaan Jemaat'}
-              {activeMenu === 'keluarga' && 'Kelola Kepala Keluarga, hubungan keluarga, status & jumlah anggota KK'}
-              {activeMenu === 'wa' && 'Template pesan ucapan ulang tahun lahir dan hari ulang tahun pernikahan'}
-              {activeMenu === 'pengguna' && 'Daftar akun login dan perizinan hak akses sistem'}
+              {activeMenu === 'daftar' &&
+                'CRUD Master Data Identitas (NIK, TTL, Alamat dll), Data Gerejawi, Data Pendidikan & Pekerjaan'}
+              {activeMenu === 'keluarga' &&
+                'Mengelola Kepala Keluarga, Hubungan Keluarga, Status dalam Keluarga, dan Jumlah Anggota Keluarga'}
             </p>
           </div>
 
@@ -324,14 +219,6 @@ export default function SuperAdminApp({ onSwitchRole }) {
 
         {/* CONTAINER CONTENT */}
         <div className="sa-container">
-          {activeMenu === 'dashboard' && (
-            <DashboardView
-              data={data}
-              onNavigate={(menu) => setActiveMenu(menu)}
-              onSendWA={handleTriggerWA}
-            />
-          )}
-
           {activeMenu === 'daftar' && (
             <DaftarJemaatView
               data={data}
@@ -356,22 +243,6 @@ export default function SuperAdminApp({ onSwitchRole }) {
               onDeleteFamily={handleDeleteFamily}
               onAddMemberToFamily={handleAddMemberToFamily}
               onViewMember={(m) => setViewingMember(m)}
-            />
-          )}
-
-          {activeMenu === 'wa' && (
-            <TemplateWAView
-              data={data}
-              onSaveTemplates={handleSaveTemplates}
-              onResetTemplates={handleResetTemplates}
-            />
-          )}
-
-          {activeMenu === 'pengguna' && (
-            <KelolaPenggunaView
-              data={data}
-              onUpdateUserRole={handleUpdateUserRole}
-              onAddUser={handleAddUser}
             />
           )}
         </div>
@@ -432,70 +303,6 @@ export default function SuperAdminApp({ onSwitchRole }) {
                 onClick={confirmDeleteMember}
               >
                 Hapus Jemaat
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* MODAL PRATINJAU & KIRIM WHATSAPP */}
-      {waModalData && (
-        <div className="sa-modal-overlay">
-          <div className="sa-modal">
-            <div className="sa-modal-header">
-              <h2>
-                {waModalData.type === 'lahir'
-                  ? '🎂 Kirim Ucapan Ulang Tahun Lahir'
-                  : '❤️ Kirim Ucapan Ulang Tahun Pernikahan'}
-              </h2>
-              <button className="sa-modal-close" type="button" onClick={() => setWaModalData(null)}>
-                ✕
-              </button>
-            </div>
-            <div className="sa-modal-body">
-              <div className="sa-form-group" style={{ marginBottom: 14 }}>
-                <label className="sa-form-label">Tujuan (Nama & Nomor WhatsApp)</label>
-                <div style={{ display: 'flex', gap: 10 }}>
-                  <input
-                    className="sa-input"
-                    type="text"
-                    disabled
-                    style={{ width: '50%' }}
-                    value={waModalData.member.nama_lengkap}
-                  />
-                  <input
-                    className="sa-input"
-                    type="tel"
-                    style={{ width: '50%' }}
-                    placeholder="Nomor WA (contoh: 081234567890)"
-                    value={waModalData.phone}
-                    onChange={(e) => setWaModalData({ ...waModalData, phone: e.target.value })}
-                  />
-                </div>
-              </div>
-
-              <div className="sa-form-group">
-                <label className="sa-form-label">Isi Pesan WhatsApp</label>
-                <textarea
-                  className="sa-textarea"
-                  rows={6}
-                  style={{ width: '100%', fontFamily: 'inherit', resize: 'vertical' }}
-                  value={waModalData.text}
-                  onChange={(e) => setWaModalData({ ...waModalData, text: e.target.value })}
-                />
-              </div>
-            </div>
-            <div className="sa-modal-footer">
-              <button className="sa-btn-secondary" type="button" onClick={() => setWaModalData(null)}>
-                Batal
-              </button>
-              <button
-                className="sa-btn-wa"
-                type="button"
-                style={{ padding: '8px 16px', fontSize: 13 }}
-                onClick={handleSendWA}
-              >
-                💬 Kirim via WhatsApp Sekarang
               </button>
             </div>
           </div>
