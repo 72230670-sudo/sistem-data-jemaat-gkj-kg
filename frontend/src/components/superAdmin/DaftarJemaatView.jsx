@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react'
 import {
   calculateAge,
-  exportMembersToCSV,
   formatIndonesianDate,
   WILAYAH_LIST,
 } from '../../lib/superAdminData.js'
@@ -51,22 +50,6 @@ export default function DaftarJemaatView({
       return matchSearch && matchWil && matchKeaktifan && matchSakramen && matchGender
     })
   }, [data.members, searchQuery, filterWilayah, filterKeaktifan, filterSakramen, filterGender])
-
-  function handleExportCSV() {
-    const csvContent = exportMembersToCSV(filteredMembers, data.families)
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.setAttribute('download', `data_jemaat_gkj_kotagede_${new Date().toISOString().slice(0, 10)}.csv`)
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-  }
-
-  function handlePrint() {
-    window.print()
-  }
 
   return (
     <div className="sa-table-card">
@@ -132,12 +115,6 @@ export default function DaftarJemaatView({
         </div>
 
         <div className="sa-toolbar-actions">
-          <button className="sa-btn-secondary" type="button" onClick={handleExportCSV} title="Ekspor data jemaat ke file CSV/Excel">
-            📥 Ekspor Excel
-          </button>
-          <button className="sa-btn-secondary" type="button" onClick={handlePrint} title="Cetak laporan">
-            🖨️ Cetak
-          </button>
           <button className="sa-btn-primary" type="button" onClick={onAddJemaat}>
             ＋ Tambah Jemaat
           </button>
