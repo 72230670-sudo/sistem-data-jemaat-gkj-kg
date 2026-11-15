@@ -42,21 +42,23 @@ export default function DataKeluargaView({
     })
   }, [data.families, search])
 
+  const cleanFamilyForm = {
+    no_kk: '',
+    nama_kepala_keluarga: '',
+    alamat: '',
+    rt: '01',
+    rw: '01',
+    desa: 'Prenggan',
+    dusun: 'Prenggan',
+    kecamatan: 'Kotagede',
+    kabupaten: 'Kota Yogyakarta',
+    provinsi: 'DI Yogyakarta',
+    kode_pos: '55172',
+  }
+
   function handleOpenCreate() {
     setEditingFamily(null)
-    setForm({
-      no_kk: '',
-      nama_kepala_keluarga: '',
-      alamat: '',
-      rt: '01',
-      rw: '01',
-      desa: 'Prenggan',
-      dusun: 'Prenggan',
-      kecamatan: 'Kotagede',
-      kabupaten: 'Kota Yogyakarta',
-      provinsi: 'DI Yogyakarta',
-      kode_pos: '55172',
-    })
+    setForm({ ...cleanFamilyForm })
     setErrorMsg('')
     setFamilyModalMode('create')
   }
@@ -66,6 +68,15 @@ export default function DataKeluargaView({
     setForm({ ...family })
     setErrorMsg('')
     setFamilyModalMode('edit')
+  }
+
+  function handleResetFamilyForm() {
+    if (familyModalMode === 'edit' && editingFamily) {
+      setForm({ ...editingFamily })
+    } else {
+      setForm({ ...cleanFamilyForm })
+    }
+    setErrorMsg('')
   }
 
   function handleSaveFamily(e) {
@@ -87,6 +98,8 @@ export default function DataKeluargaView({
       } else {
         onUpdateFamily(editingFamily.no_kk, form)
       }
+      setForm({ ...cleanFamilyForm })
+      setErrorMsg('')
       setFamilyModalMode(null)
     } catch (err) {
       setErrorMsg(err.message || 'Gagal menyimpan data keluarga.')
@@ -495,6 +508,14 @@ export default function DataKeluargaView({
                 </div>
               </div>
               <div className="sa-modal-footer">
+                <button
+                  className="sa-btn-reset"
+                  type="button"
+                  onClick={handleResetFamilyForm}
+                  title="Bersihkan seluruh isian form kembali ke awal"
+                >
+                  🔄 Reset Form
+                </button>
                 <button className="sa-btn-secondary" type="button" onClick={() => setFamilyModalMode(null)}>
                   Batal
                 </button>

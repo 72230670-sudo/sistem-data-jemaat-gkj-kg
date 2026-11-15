@@ -6,60 +6,13 @@ import {
   WILAYAH_LIST,
 } from '../../lib/superAdminData.js'
 
-export default function JemaatFormModal({
-  isOpen,
-  onClose,
-  onSave,
-  initialData = null,
-  families = [],
-}) {
-  const isEditing = Boolean(initialData)
+function getCleanFormData(initialData, families) {
+  const isRealEdit = Boolean(initialData && initialData.nik)
 
-  const [activeTab, setActiveTab] = useState('identitas')
-  const [useExistingKK, setUseExistingKK] = useState(!initialData || families.some((f) => f.no_kk === initialData.no_kk))
-
-  const [form, setForm] = useState(() => {
-    if (initialData) {
-      return {
-        ...initialData,
-        email: initialData.user?.email || '',
-        gerejawi: { ...initialData.gerejawi },
-        pendidikan: { ...initialData.pendidikan },
-        pekerjaan: { ...initialData.pekerjaan },
-        riwayat_pelayanan: initialData.riwayat_pelayanan ? [...initialData.riwayat_pelayanan] : [],
-        dokumen: initialData.dokumen ? [...initialData.dokumen] : [],
-      }
-    }
-
-    const firstFam = families[0] || null
+  if (isRealEdit) {
     return {
-      nik: '',
-      nama_lengkap: '',
-      jenis_kelamin: 'Laki-laki',
-      tmpt_lhr: 'Yogyakarta',
-      tgl_lhr: '',
-      gol_darah: 'O',
-      status_jemaat: 'Warga jemaat',
-      hubungan_keluarga: 'Kepala Keluarga',
-      no_whatsapp: '',
-      email: '',
-      id_wil: 'WIL-01',
-      nama_wilayah: 'Wilayah 1',
-      no_kk: firstFam ? firstFam.no_kk : '',
-      // Data keluarga baru jika tidak memilih yang sudah ada
-      new_kk: {
-        no_kk: '',
-        nama_kepala_keluarga: '',
-        alamat: '',
-        rt: '01',
-        rw: '01',
-        desa: 'Prenggan',
-        dusun: 'Prenggan',
-        kecamatan: 'Kotagede',
-        kabupaten: 'Kota Yogyakarta',
-        provinsi: 'DI Yogyakarta',
-        kode_pos: '55172',
-      },
+      ...initialData,
+      email: initialData.user?.email || initialData.email || '',
       gerejawi: {
         status_baptis: 'Belum',
         tgl_baptis: '',
@@ -68,26 +21,119 @@ export default function JemaatFormModal({
         status_pernikahan: 'Belum menikah',
         tgl_pernikahan: '',
         status_keaktifan: 'Aktif',
+        ...initialData.gerejawi,
       },
       pendidikan: {
         pendidikan_terakhir: 'S1',
         nama_sekolah: '',
         thn_lulus: '',
+        ...initialData.pendidikan,
       },
       pekerjaan: {
         pekerjaan: '',
         instansi: '',
         jabatan: '',
         penghasilan: '',
+        ...initialData.pekerjaan,
       },
-      riwayat_pelayanan: [],
-      dokumen: [],
+      riwayat_pelayanan: Array.isArray(initialData.riwayat_pelayanan)
+        ? initialData.riwayat_pelayanan.map((p) => ({ ...p }))
+        : [],
+      dokumen: Array.isArray(initialData.dokumen)
+        ? initialData.dokumen.map((d) => ({ ...d }))
+        : [],
     }
-  })
+  }
 
+  const defaultNoKk = (initialData && initialData.no_kk) || (families[0] ? families[0].no_kk : '')
+  return {
+    nik: '',
+    nama_lengkap: '',
+    jenis_kelamin: 'Laki-laki',
+    tmpt_lhr: '',
+    tgl_lhr: '',
+    gol_darah: 'O',
+    status_jemaat: 'Warga jemaat',
+    hubungan_keluarga: 'Kepala Keluarga',
+    no_whatsapp: '',
+    email: '',
+    id_wil: 'WIL-01',
+    nama_wilayah: 'Wilayah 1',
+    no_kk: defaultNoKk,
+    new_kk: {
+      no_kk: '',
+      nama_kepala_keluarga: '',
+      alamat: '',
+      rt: '01',
+      rw: '01',
+      desa: 'Prenggan',
+      dusun: 'Prenggan',
+      kecamatan: 'Kotagede',
+      kabupaten: 'Kota Yogyakarta',
+      provinsi: 'DI Yogyakarta',
+      kode_pos: '55172',
+    },
+    gerejawi: {
+      status_baptis: 'Belum',
+      tgl_baptis: '',
+      status_sidi: 'Belum',
+      tgl_sidi: '',
+      status_pernikahan: 'Belum menikah',
+      tgl_pernikahan: '',
+      status_keaktifan: 'Aktif',
+    },
+    pendidikan: {
+      pendidikan_terakhir: 'S1',
+      nama_sekolah: '',
+      thn_lulus: '',
+    },
+    pekerjaan: {
+      pekerjaan: '',
+      instansi: '',
+      jabatan: '',
+      penghasilan: '',
+    },
+    riwayat_pelayanan: [],
+    dokumen: [],
+  }
+}
+
+export default function JemaatFormModal({
+  isOpen,
+  onClose,
+  onSave,
+  initialData = null,
+  families = [],
+}) {
+  const isEditing = Boolean(initialData && initialData.nik)
+
+  const [activeTab, setActiveTab] = useState('identitas')
+  const [useExistingKK, setUseExistingKK] = useState(
+    !initialData || !initialData.nik || families.some((f) => f.no_kk === initialData.no_kk)
+  )
+
+  const [form, setForm] = useState(() => getCleanFormData(initialData, families))
   const [errorMsg, setErrorMsg] = useState('')
+  const [resetSuccessNotice, setResetSuccessNotice] = useState(false)
 
   if (!isOpen) return null
+
+  function handleResetForm() {
+    setForm(getCleanFormData(initialData, families))
+    setUseExistingKK(!initialData || !initialData.nik || families.some((f) => f.no_kk === initialData.no_kk))
+    setActiveTab('identitas')
+    setErrorMsg('')
+    setResetSuccessNotice(true)
+    setTimeout(() => setResetSuccessNotice(false), 2500)
+  }
+
+  function handleCloseModal() {
+    setForm(getCleanFormData(null, families))
+    setActiveTab('identitas')
+    setErrorMsg('')
+    setResetSuccessNotice(false)
+    onClose()
+  }
 
   function handleChange(field, value) {
     setForm((prev) => ({ ...prev, [field]: value }))
@@ -221,7 +267,12 @@ export default function JemaatFormModal({
     }
 
     try {
-      onSave(payload, initialData?.nik)
+      onSave(payload, isEditing ? initialData.nik : undefined)
+      // Form kembali bersih setelah data entry disimpan
+      setForm(getCleanFormData(null, families))
+      setActiveTab('identitas')
+      setErrorMsg('')
+      setResetSuccessNotice(false)
       onClose()
     } catch (err) {
       setErrorMsg(err.message || 'Terjadi kesalahan saat menyimpan data.')
@@ -234,7 +285,7 @@ export default function JemaatFormModal({
         {/* HEADER */}
         <div className="sa-modal-header">
           <h2>{isEditing ? `Edit Master Data: ${initialData.nama_lengkap}` : 'Tambah Data Jemaat Baru'}</h2>
-          <button className="sa-modal-close" type="button" onClick={onClose}>
+          <button className="sa-modal-close" type="button" onClick={handleCloseModal}>
             ✕
           </button>
         </div>
@@ -964,7 +1015,20 @@ export default function JemaatFormModal({
 
           {/* FOOTER */}
           <div className="sa-modal-footer">
-            <button className="sa-btn-secondary" type="button" onClick={onClose}>
+            <button
+              className="sa-btn-reset"
+              type="button"
+              onClick={handleResetForm}
+              title="Bersihkan seluruh isian form kembali ke awal"
+            >
+              🔄 Reset Form
+            </button>
+            {resetSuccessNotice && (
+              <span style={{ fontSize: 12, color: '#16a34a', fontWeight: 600 }}>
+                ✓ Form dibersihkan
+              </span>
+            )}
+            <button className="sa-btn-secondary" type="button" onClick={handleCloseModal}>
               Batal
             </button>
             <button className="sa-btn-primary" type="submit">

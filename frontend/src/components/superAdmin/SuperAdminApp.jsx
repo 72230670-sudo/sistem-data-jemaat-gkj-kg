@@ -218,6 +218,7 @@ export default function SuperAdminApp() {
       {/* MODAL FORM TAMBAH / EDIT JEMAAT */}
       {formModalOpen && (
         <JemaatFormModal
+          key={editingMember?.nik || 'new-jemaat'}
           isOpen={formModalOpen}
           initialData={editingMember}
           families={data.families}

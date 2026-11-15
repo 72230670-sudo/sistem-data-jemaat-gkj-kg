@@ -633,9 +633,32 @@
   padding: 16px 24px;
   border-top: 1px solid var(--sa-border);
   display: flex;
+  align-items: center;
   justify-content: flex-end;
   gap: 10px;
   background-color: #fafbfc;
+}
+
+.sa-btn-reset {
+  margin-right: auto;
+  background-color: #ffffff;
+  color: #64748b;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--sa-radius-md);
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.sa-btn-reset:hover {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border-color: #fca5a5;
 }
 
 /* FORM STYLES */
