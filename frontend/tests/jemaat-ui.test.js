@@ -2,13 +2,19 @@ import assert from 'node:assert/strict'
 import { after, before, test } from 'node:test'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
+import react from '@vitejs/plugin-react'
 import { createServer } from 'vite'
 import { createDemoData, getValue, profileSections } from '../src/lib/jemaatData.js'
 
 let server
 let components
 before(async () => {
-  server = await createServer({ server: { middlewareMode: true, ws: false }, appType: 'custom' })
+  server = await createServer({
+    configFile: false,
+    plugins: [react()],
+    server: { middlewareMode: true, ws: false },
+    appType: 'custom',
+  })
   components = await server.ssrLoadModule('/src/components/jemaat/JemaatApp.jsx')
 })
 after(async () => { await server?.close() })
