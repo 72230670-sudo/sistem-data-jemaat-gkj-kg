@@ -185,10 +185,6 @@ export default function SuperAdminApp() {
                 'Mengelola Kepala Keluarga, Hubungan Keluarga, Status dalam Keluarga, dan Jumlah Anggota Keluarga'}
             </p>
           </div>
-
-          <div className="sa-topbar-actions">
-            <span className="sa-badge-role">Super Admin</span>
-          </div>
         </header>
 
         {/* CONTAINER CONTENT */}
