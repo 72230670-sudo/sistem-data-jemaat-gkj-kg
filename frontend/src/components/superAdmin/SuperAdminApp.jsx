@@ -15,9 +15,9 @@ import DataKeluargaView from './DataKeluargaView.jsx'
 import DetailJemaatModal from './DetailJemaatModal.jsx'
 import JemaatFormModal from './JemaatFormModal.jsx'
 
-export default function SuperAdminApp({ onSwitchRole }) {
+export default function SuperAdminApp() {
   const [data, setData] = useState(() => loadMasterData())
-  // Hanya 2 menu utama sesuai tugas: 'daftar' (Data Jemaat) & 'keluarga' (Data Keluarga)
+  // 2 Menu utama pengelolaan master data: 'daftar' (Data Jemaat) & 'keluarga' (Data Keluarga)
   const [activeMenu, setActiveMenu] = useState('daftar')
 
   // Modal State
@@ -164,23 +164,7 @@ export default function SuperAdminApp({ onSwitchRole }) {
             </div>
           </div>
           <div className="sa-footer-actions">
-            <button
-              className="sa-btn-subtle"
-              type="button"
-              onClick={() => showToast('Sesi aktif sebagai Super Administrator GKJ Kotagede.')}
-            >
-              🔒 Super Admin
-            </button>
-            <button
-              className="sa-btn-subtle"
-              type="button"
-              onClick={() => {
-                if (onSwitchRole) onSwitchRole('jemaat')
-                else showToast('Keluar dari sesi Super Administrator.')
-              }}
-            >
-              🚪 Keluar
-            </button>
+            <span style={{ fontSize: 11, color: '#94a3b8' }}>Sistem Informasi GKJ Kotagede</span>
           </div>
         </div>
       </aside>
@@ -204,16 +188,6 @@ export default function SuperAdminApp({ onSwitchRole }) {
 
           <div className="sa-topbar-actions">
             <span className="sa-badge-role">Super Admin</span>
-            {onSwitchRole && (
-              <button
-                className="sa-btn-secondary"
-                type="button"
-                onClick={() => onSwitchRole('jemaat')}
-                style={{ fontSize: 12, padding: '6px 12px' }}
-              >
-                Lihat Portal Jemaat ↗
-              </button>
-            )}
           </div>
         </header>
 

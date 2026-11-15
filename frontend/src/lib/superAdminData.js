@@ -1,5 +1,9 @@
 // superAdminData.js
-// Pengelolaan Master Data Jemaat GKJ Kotagede Yogyakarta sesuai ERD & Use Case SuperAdmin
+// Pengelolaan Master Data Jemaat GKJ Kotagede Yogyakarta sesuai ERD SuperAdmin:
+// 1. Data Identitas (NIK, Nama, TTL, Jenis Kelamin, Gol Darah, Status Jemaat, Foto, Kontak)
+// 2. Data Keluarga (Kepala Keluarga, No KK, Hubungan/Status dlm Keluarga, Jmlh Anggota Keluarga, Alamat)
+// 3. Data Gerejawi (Status Baptis, Tgl Baptis, Status Sidi, Tgl Sidi, Status Pernikahan, Tgl Pernikahan, Status Keaktifan)
+// 4. Data Pendidikan & Pekerjaan (Pendidikan Terakhir, Nama Sekolah, Thn Lulus, Pekerjaan, Instansi, Jabatan, Penghasilan)
 
 export const WILAYAH_LIST = [
   { id_wil: 'WIL-01', nama_wilayah: 'Wilayah 1' },
@@ -41,19 +45,6 @@ export const DOKUMEN_OPTIONS = [
   'Pas Foto',
 ]
 
-export const DEFAULT_WA_TEMPLATES = {
-  ultah_lahir:
-    'Shalom {nama}, Majelis dan segenap Jemaat GKJ Kotagede mengucapkan Selamat Ulang Tahun yang ke-{usia}! Kiranya kasih, damai sejahtera, dan berkat Tuhan Yesus senantiasa melimpah dalam kehidupan Saudara. (Mazmur 90:12)',
-  ultah_nikah:
-    'Shalom Bapak/Ibu {nama}, Majelis dan segenap Jemaat GKJ Kotagede mengucapkan Selamat Hari Ulang Tahun Pernikahan yang ke-{usia_pernikahan}! Kiranya kasih Kristus senantiasa menaungi, menguatkan, dan memberkati bahtera keluarga Bapak/Ibu. (Kolose 3:14)',
-}
-
-// Helper untuk format tanggal lokal YYYY-MM-DD
-export function getTodayString() {
-  const d = new Date()
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-}
-
 // Menghitung usia
 export function calculateAge(birthDateStr, referenceDate = new Date()) {
   if (!birthDateStr) return 0
@@ -80,16 +71,6 @@ export function calculateMarriageAge(weddingDateStr, referenceDate = new Date())
   return Math.max(0, years)
 }
 
-// Cek apakah tanggal (MM-DD) sama dengan hari ini
-export function isTodayMonthDay(dateStr, today = new Date()) {
-  if (!dateStr) return false
-  const parts = dateStr.split('-')
-  if (parts.length < 3) return false
-  const month = parseInt(parts[1], 10)
-  const day = parseInt(parts[2], 10)
-  return month === today.getMonth() + 1 && day === today.getDate()
-}
-
 // Format tanggal ke Bahasa Indonesia (cth: 12 Mei 1992)
 export function formatIndonesianDate(dateStr) {
   if (!dateStr) return '-'
@@ -114,12 +95,8 @@ export function formatRupiah(num) {
   }).format(val)
 }
 
-// Inisialisasi Mock Dataset awal yang komprehensif sesuai ERD
+// Inisialisasi Master Data awal sesuai ERD
 export function createInitialSuperAdminData() {
-  const today = new Date()
-  const thisMonth = String(today.getMonth() + 1).padStart(2, '0')
-  const thisDay = String(today.getDate()).padStart(2, '0')
-
   const families = [
     {
       no_kk: '3471010101010001',
@@ -201,16 +178,6 @@ export function createInitialSuperAdminData() {
     },
   ]
 
-  const users = [
-    { id_user: 'USR-001', email: 'maria.wibowo@email.com', role: 'jemaat' },
-    { id_user: 'USR-002', email: 'daniel.wibowo@email.com', role: 'jemaat' },
-    { id_user: 'USR-003', email: 'bambang.setyadi@email.com', role: 'admin wilayah' },
-    { id_user: 'USR-004', email: 'yohanesthiapok@gmail.com', role: 'jemaat' },
-    { id_user: 'USR-005', email: 'paulus.sudarman@email.com', role: 'jemaat' },
-    { id_user: 'USR-006', email: 'admin.gkj@kotagede.org', role: 'super admin' },
-  ]
-
-  // Members dengan tanggal ulang tahun & pernikahan dibuat dinamis agar sesuai hari ini
   const members = [
     {
       nik: '3471015205920001',
@@ -221,14 +188,13 @@ export function createInitialSuperAdminData() {
       nama_lengkap: 'Maria Kristina Wibowo',
       jenis_kelamin: 'Perempuan',
       tmpt_lhr: 'Yogyakarta',
-      // Ultah hari ini agar widget di dashboard langsung tampil dinamis!
-      tgl_lhr: `1992-${thisMonth}-${thisDay}`,
+      tgl_lhr: '1992-05-12',
       gol_darah: 'O',
       status_jemaat: 'Warga jemaat',
       hubungan_keluarga: 'Istri',
       foto: '',
       no_whatsapp: '081234567890',
-      user: { id_user: 'USR-001', email: 'maria.wibowo@email.com', role: 'jemaat' },
+      alamat: 'Jl. Kemasan No. 12, Prenggan, Kotagede',
       gerejawi: {
         id_gereja: 'GRJ-001',
         nik: '3471015205920001',
@@ -237,8 +203,7 @@ export function createInitialSuperAdminData() {
         status_sidi: 'Sudah',
         tgl_sidi: '2010-04-18',
         status_pernikahan: 'Menikah',
-        // Ulang tahun pernikahan hari ini!
-        tgl_pernikahan: `2015-${thisMonth}-${thisDay}`,
+        tgl_pernikahan: '2015-06-20',
         status_keaktifan: 'Aktif',
       },
       pendidikan: {
@@ -262,7 +227,6 @@ export function createInitialSuperAdminData() {
       ],
       dokumen: [
         { id_dokumen: 'DOK-001-1', nik: '3471015205920001', jenis_dokumen: 'KTP', file_path: 'ktp_maria.pdf' },
-        { id_dokumen: 'DOK-001-2', nik: '3471015205920001', jenis_dokumen: 'Surat / Akta Sidi', file_path: 'sidi_maria.pdf' },
       ],
     },
     {
@@ -280,7 +244,7 @@ export function createInitialSuperAdminData() {
       hubungan_keluarga: 'Kepala Keluarga',
       foto: '',
       no_whatsapp: '081298765432',
-      user: { id_user: 'USR-002', email: 'daniel.wibowo@email.com', role: 'jemaat' },
+      alamat: 'Jl. Kemasan No. 12, Prenggan, Kotagede',
       gerejawi: {
         id_gereja: 'GRJ-002',
         nik: '3471011708900002',
@@ -289,7 +253,7 @@ export function createInitialSuperAdminData() {
         status_sidi: 'Sudah',
         tgl_sidi: '2008-03-23',
         status_pernikahan: 'Menikah',
-        tgl_pernikahan: `2015-${thisMonth}-${thisDay}`,
+        tgl_pernikahan: '2015-06-20',
         status_keaktifan: 'Aktif',
       },
       pendidikan: {
@@ -329,7 +293,7 @@ export function createInitialSuperAdminData() {
       hubungan_keluarga: 'Anak',
       foto: '',
       no_whatsapp: '',
-      user: null,
+      alamat: 'Jl. Kemasan No. 12, Prenggan, Kotagede',
       gerejawi: {
         id_gereja: 'GRJ-003',
         nik: '3471014903170003',
@@ -368,14 +332,13 @@ export function createInitialSuperAdminData() {
       nama_lengkap: 'Bambang Setyadi',
       jenis_kelamin: 'Laki-laki',
       tmpt_lhr: 'Sleman',
-      // Ultah lahir hari ini juga untuk demo di Wilayah 2!
-      tgl_lhr: `1982-${thisMonth}-${thisDay}`,
+      tgl_lhr: '1982-02-12',
       gol_darah: 'B',
       status_jemaat: 'Warga jemaat',
       hubungan_keluarga: 'Kepala Keluarga',
       foto: '',
       no_whatsapp: '081328019283',
-      user: { id_user: 'USR-003', email: 'bambang.setyadi@email.com', role: 'admin wilayah' },
+      alamat: 'Jl. Mondorakan No. 45, Purbayan, Kotagede',
       gerejawi: {
         id_gereja: 'GRJ-004',
         nik: '3471011202820004',
@@ -424,7 +387,7 @@ export function createInitialSuperAdminData() {
       hubungan_keluarga: 'Kepala Keluarga',
       foto: '',
       no_whatsapp: '081343446030',
-      user: { id_user: 'USR-004', email: 'yohanesthiapok@gmail.com', role: 'jemaat' },
+      alamat: 'Jl. Retno Dumilah No. 8, Rejowinangun, Kotagede',
       gerejawi: {
         id_gereja: 'GRJ-005',
         nik: '3471010106050005',
@@ -453,162 +416,18 @@ export function createInitialSuperAdminData() {
       },
       riwayat_pelayanan: [
         { id_pelayanan: 'PLY-005-1', nik: '3471010106050005', nama_pelayanan: 'Multimedia', thn_mulai: '2022', thn_berakhir: '' },
-        { id_pelayanan: 'PLY-005-2', nik: '3471010106050005', nama_pelayanan: 'Komisi Pemuda', thn_mulai: '2023', thn_berakhir: '' },
       ],
-      dokumen: [
-        { id_dokumen: 'DOK-005-1', nik: '3471010106050005', jenis_dokumen: 'KTP', file_path: 'ktp_yohanes.pdf' },
-      ],
-    },
-    {
-      nik: '3471011504750006',
-      id_wil: 'WIL-04',
-      nama_wilayah: 'Wilayah 4',
-      no_kk: '3471010404040004',
-      id_user: 'USR-005',
-      nama_lengkap: 'Paulus Sudarman',
-      jenis_kelamin: 'Laki-laki',
-      tmpt_lhr: 'Bantul',
-      tgl_lhr: '1975-04-15',
-      gol_darah: 'AB',
-      status_jemaat: 'Warga jemaat',
-      hubungan_keluarga: 'Kepala Keluarga',
-      foto: '',
-      no_whatsapp: '081227182930',
-      user: { id_user: 'USR-005', email: 'paulus.sudarman@email.com', role: 'jemaat' },
-      gerejawi: {
-        id_gereja: 'GRJ-006',
-        nik: '3471011504750006',
-        status_baptis: 'Sudah',
-        tgl_baptis: '1988-05-22',
-        status_sidi: 'Sudah',
-        tgl_sidi: '1993-04-11',
-        status_pernikahan: 'Menikah',
-        tgl_pernikahan: '2001-09-15',
-        status_keaktifan: 'Aktif',
-      },
-      pendidikan: {
-        id_pendidikan: 'PDK-006',
-        nik: '3471011504750006',
-        pendidikan_terakhir: 'S1',
-        nama_sekolah: 'Universitas Atma Jaya Yogyakarta',
-        thn_lulus: '1998',
-      },
-      pekerjaan: {
-        id_pekerjaan: 'PKJ-006',
-        nik: '3471011504750006',
-        pekerjaan: 'Karyawan Swasta',
-        instansi: 'PT Wijaya Karya',
-        jabatan: 'Project Supervisor',
-        penghasilan: 9200000,
-      },
-      riwayat_pelayanan: [
-        { id_pelayanan: 'PLY-006-1', nik: '3471011504750006', nama_pelayanan: 'Pelayanan Musik', thn_mulai: '2015', thn_berakhir: '' },
-      ],
-      dokumen: [],
-    },
-    {
-      nik: '3471012010600007',
-      id_wil: 'WIL-05',
-      nama_wilayah: 'Wilayah 5',
-      no_kk: '3471010505050005',
-      id_user: null,
-      nama_lengkap: 'Markus Hariyanto',
-      jenis_kelamin: 'Laki-laki',
-      tmpt_lhr: 'Klaten',
-      tgl_lhr: '1960-10-20',
-      gol_darah: 'A',
-      status_jemaat: 'Warga jemaat',
-      hubungan_keluarga: 'Kepala Keluarga',
-      foto: '',
-      no_whatsapp: '085743219876',
-      user: null,
-      gerejawi: {
-        id_gereja: 'GRJ-007',
-        nik: '3471012010600007',
-        status_baptis: 'Sudah',
-        tgl_baptis: '1975-06-08',
-        status_sidi: 'Sudah',
-        tgl_sidi: '1979-04-15',
-        status_pernikahan: 'Menikah',
-        tgl_pernikahan: '1986-11-20',
-        status_keaktifan: 'Aktif',
-      },
-      pendidikan: {
-        id_pendidikan: 'PDK-007',
-        nik: '3471012010600007',
-        pendidikan_terakhir: 'D3',
-        nama_sekolah: 'Akademi Akuntansi Yogyakarta',
-        thn_lulus: '1983',
-      },
-      pekerjaan: {
-        id_pekerjaan: 'PKJ-007',
-        nik: '3471012010600007',
-        pekerjaan: 'Pensiunan',
-        instansi: 'Bank Mandiri',
-        jabatan: 'Mantan Kepala Cabang',
-        penghasilan: 6000000,
-      },
-      riwayat_pelayanan: [
-        { id_pelayanan: 'PLY-007-1', nik: '3471012010600007', nama_pelayanan: 'Komisi Adiyuswa (Lansia)', thn_mulai: '2020', thn_berakhir: '' },
-      ],
-      dokumen: [],
-    },
-    {
-      nik: '3471011111950008',
-      id_wil: 'WIL-06',
-      nama_wilayah: 'Wilayah 6',
-      no_kk: '3471010606060006',
-      id_user: null,
-      nama_lengkap: 'Lukas Prasetyo',
-      jenis_kelamin: 'Laki-laki',
-      tmpt_lhr: 'Magelang',
-      tgl_lhr: '1995-11-11',
-      gol_darah: 'B',
-      status_jemaat: 'Simpatisan',
-      hubungan_keluarga: 'Kepala Keluarga',
-      foto: '',
-      no_whatsapp: '087839201928',
-      user: null,
-      gerejawi: {
-        id_gereja: 'GRJ-008',
-        nik: '3471011111950008',
-        status_baptis: 'Belum',
-        tgl_baptis: '',
-        status_sidi: 'Belum',
-        tgl_sidi: '',
-        status_pernikahan: 'Belum menikah',
-        tgl_pernikahan: '',
-        status_keaktifan: 'Pasif',
-      },
-      pendidikan: {
-        id_pendidikan: 'PDK-008',
-        nik: '3471011111950008',
-        pendidikan_terakhir: 'SMA / SMK',
-        nama_sekolah: 'SMK Negeri 2 Yogyakarta',
-        thn_lulus: '2013',
-      },
-      pekerjaan: {
-        id_pekerjaan: 'PKJ-008',
-        nik: '3471011111950008',
-        pekerjaan: 'Mekanik / Bengkel',
-        instansi: 'Bengkel Mandiri Motor',
-        jabatan: 'Kepala Bengkel',
-        penghasilan: 4000000,
-      },
-      riwayat_pelayanan: [],
       dokumen: [],
     },
   ]
 
   return {
     families,
-    users,
     members,
-    wa_templates: DEFAULT_WA_TEMPLATES,
   }
 }
 
-const STORAGE_KEY = 'gkj_superadmin_master_data_v2'
+const STORAGE_KEY = 'gkj_superadmin_master_data_crud_v3'
 
 export function loadMasterData() {
   if (typeof window === 'undefined') {
@@ -623,7 +442,7 @@ export function loadMasterData() {
       }
     }
   } catch (err) {
-    console.warn('Gagal memuat localStorage superadmin, menggunakan default data.', err)
+    console.warn('Gagal memuat master data, menggunakan default data.', err)
   }
   const initial = createInitialSuperAdminData()
   saveMasterData(initial)
@@ -651,13 +470,11 @@ export function resetMasterData() {
 // ==========================================
 
 export function addMember(data, newMemberData) {
-  // Validasi NIK unik
   const exists = data.members.some((m) => m.nik === newMemberData.nik)
   if (exists) {
     throw new Error(`Jemaat dengan NIK "${newMemberData.nik}" sudah terdaftar.`)
   }
 
-  // Cari nama wilayah
   const wil = WILAYAH_LIST.find((w) => w.id_wil === newMemberData.id_wil)
   const nama_wilayah = wil ? wil.nama_wilayah : (newMemberData.nama_wilayah || 'Wilayah 1')
 
@@ -666,19 +483,16 @@ export function addMember(data, newMemberData) {
     id_wil: newMemberData.id_wil || 'WIL-01',
     nama_wilayah,
     no_kk: newMemberData.no_kk ? newMemberData.no_kk.trim() : '',
-    id_user: newMemberData.id_user || null,
     nama_lengkap: newMemberData.nama_lengkap.trim(),
     jenis_kelamin: newMemberData.jenis_kelamin || 'Laki-laki',
     tmpt_lhr: newMemberData.tmpt_lhr || 'Yogyakarta',
     tgl_lhr: newMemberData.tgl_lhr || '',
     gol_darah: newMemberData.gol_darah || 'Belum diketahui',
     status_jemaat: newMemberData.status_jemaat || 'Warga jemaat',
-    hubungan_keluarga: newMemberData.hubungan_keluarga || 'Anggota',
+    hubungan_keluarga: newMemberData.hubungan_keluarga || 'Kepala Keluarga',
     foto: newMemberData.foto || '',
     no_whatsapp: newMemberData.no_whatsapp || '',
-    user: newMemberData.email
-      ? { id_user: newMemberData.id_user || `USR-${Date.now()}`, email: newMemberData.email, role: 'jemaat' }
-      : null,
+    alamat: newMemberData.alamat || '',
     gerejawi: {
       id_gereja: `GRJ-${Date.now()}`,
       nik: newMemberData.nik.trim(),
@@ -721,7 +535,6 @@ export function updateMember(data, oldNik, updatedFields) {
     throw new Error(`Data jemaat dengan NIK ${oldNik} tidak ditemukan.`)
   }
 
-  // Jika NIK diubah, pastikan tidak bentrok dengan jemaat lain
   if (updatedFields.nik && updatedFields.nik !== oldNik) {
     const conflict = data.members.some((m) => m.nik === updatedFields.nik)
     if (conflict) {
@@ -815,7 +628,7 @@ export function updateFamily(data, no_kk, updatedFields) {
   updatedFamilies[index] = {
     ...updatedFamilies[index],
     ...updatedFields,
-    no_kk, // no_kk tetap
+    no_kk,
   }
 
   const updatedData = { ...data, families: updatedFamilies }
@@ -824,11 +637,10 @@ export function updateFamily(data, no_kk, updatedFields) {
 }
 
 export function deleteFamily(data, no_kk) {
-  // Cek apakah ada anggota jemaat yang masih terikat dengan KK ini
   const memberCount = data.members.filter((m) => m.no_kk === no_kk).length
   if (memberCount > 0) {
     throw new Error(
-      `Tidak dapat menghapus KK ${no_kk} karena masih memiliki ${memberCount} anggota jemaat terdaftar. Pindahkan atau hapus anggota jemaat terlebih dahulu.`
+      `Tidak dapat menghapus KK ${no_kk} karena masih memiliki ${memberCount} anggota jemaat terdaftar.`
     )
   }
 
@@ -842,192 +654,4 @@ export function deleteFamily(data, no_kk) {
 export function getFamilyMembers(members, no_kk) {
   if (!no_kk) return []
   return members.filter((m) => m.no_kk === no_kk)
-}
-
-// ==========================================
-// STATISTIK & DEMOGRAFI DASHBOARD
-// ==========================================
-
-export function computeDashboardStats(data, today = new Date()) {
-  const { members, families } = data
-  const totalJemaat = members.length
-  const jemaatAktif = members.filter((m) => m.gerejawi?.status_keaktifan === 'Aktif').length
-  const jemaatPasif = members.filter((m) => m.gerejawi?.status_keaktifan === 'Pasif').length
-  const jemaatPindah = members.filter((m) => m.gerejawi?.status_keaktifan === 'Pindah').length
-  const jemaatMeninggal = members.filter((m) => m.gerejawi?.status_keaktifan === 'Meninggal').length
-
-  // Ulang tahun hari ini
-  const ultahLahirList = members.filter((m) => isTodayMonthDay(m.tgl_lhr, today))
-  // Ulang tahun pernikahan hari ini
-  const ultahNikahList = members.filter((m) =>
-    m.gerejawi?.status_pernikahan === 'Menikah' && isTodayMonthDay(m.gerejawi?.tgl_pernikahan, today)
-  )
-
-  // Distribusi per Wilayah (Wilayah 1 s/d 6)
-  const perWilayah = WILAYAH_LIST.map((wil) => {
-    const count = members.filter((m) => m.id_wil === wil.id_wil).length
-    return { ...wil, count }
-  })
-
-  // Distribusi Kelompok Usia
-  // Anak: < 12, Remaja: 12-17, Pemuda: 18-30, Dewasa: 31-59, Lansia: >= 60
-  const usiaDistribution = {
-    anak: 0,
-    remaja: 0,
-    pemuda: 0,
-    dewasa: 0,
-    lansia: 0,
-  }
-
-  members.forEach((m) => {
-    const age = calculateAge(m.tgl_lhr, today)
-    if (age < 12) usiaDistribution.anak++
-    else if (age <= 17) usiaDistribution.remaja++
-    else if (age <= 30) usiaDistribution.pemuda++
-    else if (age <= 59) usiaDistribution.dewasa++
-    else usiaDistribution.lansia++
-  })
-
-  // Distribusi Jenis Kelamin
-  const lakiCount = members.filter((m) => m.jenis_kelamin === 'Laki-laki').length
-  const perempuanCount = members.filter((m) => m.jenis_kelamin === 'Perempuan').length
-
-  // Distribusi Status Gerejawi
-  const sudahBaptis = members.filter((m) => m.gerejawi?.status_baptis === 'Sudah').length
-  const belumBaptis = members.filter((m) => m.gerejawi?.status_baptis !== 'Sudah').length
-  const sudahSidi = members.filter((m) => m.gerejawi?.status_sidi === 'Sudah').length
-  const belumSidi = members.filter((m) => m.gerejawi?.status_sidi !== 'Sudah').length
-
-  return {
-    totalJemaat,
-    jemaatAktif,
-    jemaatPasif,
-    jemaatPindah,
-    jemaatMeninggal,
-    totalKeluarga: families.length,
-    ultahLahirCount: ultahLahirList.length,
-    ultahNikahCount: ultahNikahList.length,
-    ultahLahirList,
-    ultahNikahList,
-    perWilayah,
-    usiaDistribution,
-    gender: {
-      laki: lakiCount,
-      perempuan: perempuanCount,
-    },
-    statusGerejawi: {
-      sudahBaptis,
-      belumBaptis,
-      sudahSidi,
-      belumSidi,
-    },
-  }
-}
-
-// ==========================================
-// FORMAT PESAN WHATSAPP & LINK
-// ==========================================
-
-export function generateWhatsAppMessage(template, member, type = 'lahir') {
-  if (!member) return ''
-  const nama = member.nama_lengkap || 'Saudara'
-  const usia = calculateAge(member.tgl_lhr)
-  const usiaNikah = calculateMarriageAge(member.gerejawi?.tgl_pernikahan)
-
-  let msg = template || (type === 'lahir' ? DEFAULT_WA_TEMPLATES.ultah_lahir : DEFAULT_WA_TEMPLATES.ultah_nikah)
-  msg = msg.replace(/{nama}/g, nama)
-  msg = msg.replace(/{usia}/g, String(usia))
-  msg = msg.replace(/{usia_pernikahan}/g, String(usiaNikah))
-  msg = msg.replace(/{gereja}/g, 'GKJ Kotagede')
-  return msg
-}
-
-export function generateWhatsAppUrl(phone, message) {
-  if (!phone) return ''
-  // Normalisasi no telepon (ubah 08xx jadi 628xx, buang spasi & tanda minus)
-  let clean = phone.replace(/[^0-9]/g, '')
-  if (clean.startsWith('0')) {
-    clean = '62' + clean.slice(1)
-  }
-  return `https://wa.me/${clean}?text=${encodeURIComponent(message)}`
-}
-
-// ==========================================
-// EKSPOR LAPORAN CSV / EXCEL
-// ==========================================
-
-export function exportMembersToCSV(members, families) {
-  const headers = [
-    'NIK',
-    'Nama Lengkap',
-    'Jenis Kelamin',
-    'Tempat Lahir',
-    'Tanggal Lahir',
-    'Usia',
-    'Gol Darah',
-    'Status Jemaat',
-    'No WhatsApp',
-    'Wilayah',
-    'No KK',
-    'Nama Kepala Keluarga',
-    'Hubungan Keluarga',
-    'Alamat Lengkap',
-    'Status Keaktifan',
-    'Status Baptis',
-    'Tanggal Baptis',
-    'Status Sidi',
-    'Tanggal Sidi',
-    'Status Pernikahan',
-    'Tanggal Pernikahan',
-    'Pendidikan Terakhir',
-    'Nama Sekolah',
-    'Tahun Lulus',
-    'Pekerjaan',
-    'Instansi',
-    'Jabatan',
-    'Penghasilan',
-  ]
-
-  const familyMap = new Map((families || []).map((f) => [f.no_kk, f]))
-
-  const rows = members.map((m) => {
-    const f = familyMap.get(m.no_kk) || {}
-    const alamatFull = [f.alamat, f.rt ? `RT ${f.rt}` : '', f.rw ? `RW ${f.rw}` : '', f.desa, f.kecamatan, f.kabupaten]
-      .filter(Boolean)
-      .join(', ')
-
-    return [
-      `"${m.nik}"`,
-      `"${m.nama_lengkap || ''}"`,
-      `"${m.jenis_kelamin || ''}"`,
-      `"${m.tmpt_lhr || ''}"`,
-      `"${m.tgl_lhr || ''}"`,
-      `"${calculateAge(m.tgl_lhr)}"`,
-      `"${m.gol_darah || ''}"`,
-      `"${m.status_jemaat || ''}"`,
-      `"${m.no_whatsapp || ''}"`,
-      `"${m.nama_wilayah || ''}"`,
-      `"${m.no_kk || ''}"`,
-      `"${f.nama_kepala_keluarga || ''}"`,
-      `"${m.hubungan_keluarga || ''}"`,
-      `"${alamatFull}"`,
-      `"${m.gerejawi?.status_keaktifan || ''}"`,
-      `"${m.gerejawi?.status_baptis || ''}"`,
-      `"${m.gerejawi?.tgl_baptis || ''}"`,
-      `"${m.gerejawi?.status_sidi || ''}"`,
-      `"${m.gerejawi?.tgl_sidi || ''}"`,
-      `"${m.gerejawi?.status_pernikahan || ''}"`,
-      `"${m.gerejawi?.tgl_pernikahan || ''}"`,
-      `"${m.pendidikan?.pendidikan_terakhir || ''}"`,
-      `"${m.pendidikan?.nama_sekolah || ''}"`,
-      `"${m.pendidikan?.thn_lulus || ''}"`,
-      `"${m.pekerjaan?.pekerjaan || ''}"`,
-      `"${m.pekerjaan?.instansi || ''}"`,
-      `"${m.pekerjaan?.jabatan || ''}"`,
-      `"${m.pekerjaan?.penghasilan || 0}"`,
-    ]
-  })
-
-  const csvContent = '\uFEFF' + [headers.join(','), ...rows.map((r) => r.join(','))].join('\r\n')
-  return csvContent
 }
