@@ -64,14 +64,14 @@ function getCleanFormData(initialData, families) {
       no_kk: '',
       nama_kepala_keluarga: '',
       alamat: '',
-      rt: '01',
-      rw: '01',
-      desa: 'Prenggan',
-      dusun: 'Prenggan',
-      kecamatan: 'Kotagede',
-      kabupaten: 'Kota Yogyakarta',
-      provinsi: 'DI Yogyakarta',
-      kode_pos: '55172',
+      rt: '',
+      rw: '',
+      desa: '',
+      dusun: '',
+      kecamatan: '',
+      kabupaten: '',
+      provinsi: '',
+      kode_pos: '',
     },
     gerejawi: {
       status_baptis: 'Belum',
@@ -611,14 +611,14 @@ export default function JemaatFormModal({
                         <input
                           className="sa-input"
                           style={{ width: '50%' }}
-                          placeholder="RT 01"
+                          placeholder="RT (cth: 01)"
                           value={form.new_kk?.rt || ''}
                           onChange={(e) => handleNewKKChange('rt', e.target.value)}
                         />
                         <input
                           className="sa-input"
                           style={{ width: '50%' }}
-                          placeholder="RW 02"
+                          placeholder="RW (cth: 02)"
                           value={form.new_kk?.rw || ''}
                           onChange={(e) => handleNewKKChange('rw', e.target.value)}
                         />
@@ -631,7 +631,7 @@ export default function JemaatFormModal({
                         <input
                           className="sa-input"
                           style={{ width: '50%' }}
-                          placeholder="Prenggan"
+                          placeholder="Kelurahan / Desa"
                           value={form.new_kk?.desa || ''}
                           onChange={(e) => handleNewKKChange('desa', e.target.value)}
                         />
@@ -651,14 +651,14 @@ export default function JemaatFormModal({
                         <input
                           className="sa-input"
                           style={{ width: '50%' }}
-                          placeholder="Kotagede"
+                          placeholder="Kecamatan"
                           value={form.new_kk?.kecamatan || ''}
                           onChange={(e) => handleNewKKChange('kecamatan', e.target.value)}
                         />
                         <input
                           className="sa-input"
                           style={{ width: '50%' }}
-                          placeholder="Kota Yogyakarta"
+                          placeholder="Kota / Kabupaten"
                           value={form.new_kk?.kabupaten || ''}
                           onChange={(e) => handleNewKKChange('kabupaten', e.target.value)}
                         />
@@ -671,14 +671,14 @@ export default function JemaatFormModal({
                         <input
                           className="sa-input"
                           style={{ width: '70%' }}
-                          placeholder="DI Yogyakarta"
+                          placeholder="Provinsi"
                           value={form.new_kk?.provinsi || ''}
                           onChange={(e) => handleNewKKChange('provinsi', e.target.value)}
                         />
                         <input
                           className="sa-input"
                           style={{ width: '30%' }}
-                          placeholder="55172"
+                          placeholder="Kode Pos"
                           value={form.new_kk?.kode_pos || ''}
                           onChange={(e) => handleNewKKChange('kode_pos', e.target.value)}
                         />

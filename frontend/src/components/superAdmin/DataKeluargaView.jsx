@@ -46,14 +46,14 @@ export default function DataKeluargaView({
     no_kk: '',
     nama_kepala_keluarga: '',
     alamat: '',
-    rt: '01',
-    rw: '01',
-    desa: 'Prenggan',
-    dusun: 'Prenggan',
-    kecamatan: 'Kotagede',
-    kabupaten: 'Kota Yogyakarta',
-    provinsi: 'DI Yogyakarta',
-    kode_pos: '55172',
+    rt: '',
+    rw: '',
+    desa: '',
+    dusun: '',
+    kecamatan: '',
+    kabupaten: '',
+    provinsi: '',
+    kode_pos: '',
   }
 
   function handleOpenCreate() {
@@ -432,14 +432,14 @@ export default function DataKeluargaView({
                       <input
                         className="sa-input"
                         style={{ width: '50%' }}
-                        placeholder="RT 01"
+                        placeholder="RT (cth: 01)"
                         value={form.rt}
                         onChange={(e) => setForm({ ...form, rt: e.target.value })}
                       />
                       <input
                         className="sa-input"
                         style={{ width: '50%' }}
-                        placeholder="RW 02"
+                        placeholder="RW (cth: 02)"
                         value={form.rw}
                         onChange={(e) => setForm({ ...form, rw: e.target.value })}
                       />
@@ -452,7 +452,7 @@ export default function DataKeluargaView({
                       <input
                         className="sa-input"
                         style={{ width: '50%' }}
-                        placeholder="Prenggan"
+                        placeholder="Kelurahan / Desa"
                         value={form.desa}
                         onChange={(e) => setForm({ ...form, desa: e.target.value })}
                       />
@@ -472,14 +472,14 @@ export default function DataKeluargaView({
                       <input
                         className="sa-input"
                         style={{ width: '50%' }}
-                        placeholder="Kotagede"
+                        placeholder="Kecamatan"
                         value={form.kecamatan}
                         onChange={(e) => setForm({ ...form, kecamatan: e.target.value })}
                       />
                       <input
                         className="sa-input"
                         style={{ width: '50%' }}
-                        placeholder="Kota Yogyakarta"
+                        placeholder="Kota / Kabupaten"
                         value={form.kabupaten}
                         onChange={(e) => setForm({ ...form, kabupaten: e.target.value })}
                       />
@@ -492,14 +492,14 @@ export default function DataKeluargaView({
                       <input
                         className="sa-input"
                         style={{ width: '70%' }}
-                        placeholder="DI Yogyakarta"
+                        placeholder="Provinsi"
                         value={form.provinsi}
                         onChange={(e) => setForm({ ...form, provinsi: e.target.value })}
                       />
                       <input
                         className="sa-input"
                         style={{ width: '30%' }}
-                        placeholder="55172"
+                        placeholder="Kode Pos"
                         value={form.kode_pos}
                         onChange={(e) => setForm({ ...form, kode_pos: e.target.value })}
                       />
