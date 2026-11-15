@@ -1183,39 +1183,39 @@
   text-align: center;
 }
 
-.jkn-login-logo {
-  width: 64px;
-  height: 64px;
-  border-radius: 12px;
-  object-fit: contain;
-  margin-bottom: 12px;
-  border: 1px solid #cbd5e1;
+.jkn-login-brand-icon {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 16px;
+  background: #eef6ff;
+  border: 1px solid #d0e4f7;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.jkn-login-badge {
-  display: inline-block;
-  background: var(--gkj-primary-light);
-  color: var(--gkj-primary);
-  font-size: 11px;
+.jkn-login-brand-icon span {
+  font-size: 18px;
   font-weight: 800;
-  letter-spacing: 0.8px;
-  padding: 4px 12px;
-  border-radius: 99px;
-  margin-bottom: 10px;
+  color: #1d4ed8;
+  letter-spacing: 0.5px;
 }
 
 .jkn-login-box h1 {
   font-size: 22px;
   font-weight: 800;
-  color: var(--gkj-text-main);
+  color: #0f172a;
   margin: 0 0 6px;
+  text-transform: capitalize;
 }
 
 .jkn-login-sub {
   font-size: 13px;
-  color: var(--gkj-text-muted);
+  color: #64748b;
   margin: 0 0 24px;
   line-height: 1.4;
+  font-weight: 500;
 }
 
 .jkn-login-box form {
@@ -1232,30 +1232,38 @@
 }
 
 .jkn-field span {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  color: var(--gkj-text-main);
+  color: #334155;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
 }
 
 .jkn-field input,
 .jkn-field select {
-  padding: 11px 14px;
+  padding: 12px 14px;
   border: 1px solid #cbd5e1;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 14px;
-  color: var(--gkj-text-main);
+  color: #0f172a;
+  background-color: #ffffff;
   outline: none;
+  transition: all 0.15s ease;
+}
+
+.jkn-field input::placeholder {
+  color: #94a3b8;
 }
 
 .jkn-field input:focus,
 .jkn-field select:focus {
-  border-color: var(--gkj-primary);
-  box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.15);
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
 .jkn-login-help {
   font-size: 11px;
-  color: var(--gkj-text-muted);
+  color: #64748b;
   margin: -6px 0 4px;
 }
 
@@ -1265,6 +1273,49 @@
   padding: 12px 18px;
   font-size: 14px;
   margin-top: 4px;
+}
+
+.jkn-demo-section {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.jkn-demo-divider {
+  height: 1px;
+  background-color: #f1f5f9;
+  margin-bottom: 18px;
+}
+
+.jkn-demo-help {
+  font-size: 12px;
+  color: #64748b;
+  margin: 0 0 10px;
+}
+
+.jkn-btn-demo {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: #f1f6fd;
+  border: 1px solid #dbeafe;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1d4ed8;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.jkn-btn-demo:hover {
+  background: #e0f2fe;
+  border-color: #bfdbfe;
+}
+
+.jkn-demo-icon {
+  font-size: 13px;
 }
 
 .jkn-demo-card {
@@ -1291,24 +1342,6 @@
 .jkn-demo-actions {
   display: flex;
   gap: 8px;
-}
-
-.jkn-btn-demo {
-  flex: 1;
-  padding: 7px 10px;
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--gkj-primary);
-  cursor: pointer;
-  transition: all 0.15s;
-}
-
-.jkn-btn-demo:hover {
-  background: var(--gkj-primary-light);
-  border-color: #bfdbfe;
 }
 
 .jkn-login-secure {

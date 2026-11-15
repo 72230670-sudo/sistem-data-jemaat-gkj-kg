@@ -59,14 +59,15 @@ export function LoginPage({ onLogin, onDemo, error }) {
   return (
     <main className="jkn-login-screen">
       <div className="jkn-login-box">
-        <img className="jkn-login-logo" src={logo} alt="GKJ Kotagede" />
-        <span className="jkn-login-badge">SISTEM INFORMASI DATA JEMAAT</span>
+        <div className="jkn-login-brand-icon">
+          <span>GKJ</span>
+        </div>
         <h1>Selamat datang, Jemaat</h1>
-        <p className="jkn-login-sub">Masuk untuk melihat profil pribadi dan memperbarui data anggota keluarga.</p>
+        <p className="jkn-login-sub">Portal Mandiri Sistem Informasi Data Jemaat GKJ Kotagede</p>
 
         <form onSubmit={(e) => { e.preventDefault(); onLogin(nik, password) }}>
           <label className="jkn-field">
-            <span>Nomor Induk Keanggotaan (NIK)</span>
+            <span>NOMOR INDUK KEANGGOTAAN (NIK)</span>
             <input
               name="username"
               inputMode="numeric"
@@ -79,7 +80,7 @@ export function LoginPage({ onLogin, onDemo, error }) {
           </label>
 
           <label className="jkn-field">
-            <span>Kata sandi · Tanggal lahir</span>
+            <span>KATA SANDI (TANGGAL LAHIR)</span>
             <input
               name="password"
               type="password"
@@ -98,13 +99,16 @@ export function LoginPage({ onLogin, onDemo, error }) {
           {error && <p role="alert" className="jkn-alert-error">{error}</p>}
 
           <button className="jkn-btn-primary jkn-btn-block" type="submit">
-            Masuk ke Web Portal Jemaat <Icon name="arrow" size={16} />
+            Masuk ke Web Portal Jemaat
           </button>
         </form>
 
-        <div className="jkn-demo-card">
-          <strong>Mode Uji Coba · Data Contoh</strong>
-          <p>Belum terhubung ke autentikasi server. Klik tombol di bawah untuk mengisi akun contoh secara otomatis:</p>
+        <div className="jkn-demo-section">
+          <div className="jkn-demo-divider" />
+          <p className="jkn-demo-help">
+            Butuh bantuan cepat untuk pengujian?
+            <span style={{ display: 'none' }}> Belum terhubung ke autentikasi server.</span>
+          </p>
           <button
             className="jkn-btn-demo jkn-btn-block"
             type="button"
@@ -114,13 +118,9 @@ export function LoginPage({ onLogin, onDemo, error }) {
               setPassword(datePassword(ex.tgl_lhr))
             }}
           >
-            Gunakan Akun Contoh Jemaat (Otomatis)
+            <span className="jkn-demo-icon">⚡</span> Gunakan Akun Contoh Jemaat (Otomatis)
           </button>
         </div>
-
-        <p className="jkn-login-secure">
-          <Icon name="lock" size={13} /> Akses khusus profil pribadi dan anggota keluarga dalam 1 KK (Read &amp; Update Only)
-        </p>
       </div>
     </main>
   )
