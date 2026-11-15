@@ -52,6 +52,36 @@ function Avatar({ member, large = false }) {
   )
 }
 
+function LockedTag({
+  text = 'ID/NIK Terkunci',
+  tooltipText = 'NIK terkunci otomatis oleh sistem. Hubungi administrator gereja jika ada kesalahan data.',
+}) {
+  const [showTooltip, setShowTooltip] = useState(false)
+
+  return (
+    <div
+      className="jkn-tag-locked-wrap"
+      onMouseEnter={() => setShowTooltip(true)}
+      onMouseLeave={() => setShowTooltip(false)}
+      onClick={(e) => {
+        e.stopPropagation()
+        setShowTooltip((prev) => !prev)
+      }}
+    >
+      <span className="jkn-tag-locked" title={tooltipText}>
+        <Icon name="lock" size={12} />
+        <span>{text}</span>
+        <span className="jkn-tooltip-trigger" aria-label="Informasi">ⓘ</span>
+      </span>
+      {showTooltip && (
+        <div className="jkn-locked-popover" role="tooltip">
+          <p>{tooltipText}</p>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export function LoginPage({ onLogin, onDemo, error }) {
   const [nik, setNik] = useState('')
   const [password, setPassword] = useState('')
@@ -368,8 +398,12 @@ export default function JemaatApp() {
   }
 
   function openEditModal(key, label, currentValue, type = 'text', options = null, isFamily = false) {
-    if (key === 'nik' || key === 'id' || key === 'no_kk' || key === 'id_wil') {
-      setNotice('Field ini bersifat tetap dan dilindungi oleh sistem gereja (Terkunci).')
+    if (key === 'nik' || key === 'id' || key === 'no_kk') {
+      setNotice('NIK terkunci otomatis oleh sistem. Hubungi administrator gereja jika ada kesalahan data.')
+      return
+    }
+    if (key === 'id_wil') {
+      setNotice('Wilayah pelayanan terkunci otomatis oleh sistem. Hubungi administrator gereja jika ada kesalahan data.')
       return
     }
     setModalTarget({ key, label, value: currentValue ?? '', type, options, isFamily })
@@ -591,15 +625,6 @@ export default function JemaatApp() {
                   </div>
                 </div>
               </div>
-
-              {/* HAK AKSES NOTE */}
-              <div className="jkn-access-info-card">
-                <Icon name="lock" size={16} />
-                <div>
-                  <strong>Hak Akses Jemaat</strong>
-                  <p>Hanya Read &amp; Update untuk diri sendiri dan anggota keluarga 1 KK. Field ID dan NIK dikunci permanen.</p>
-                </div>
-              </div>
             </aside>
 
             {/* KOLOM KANAN: DETAIL PROFIL LENGKAP & TERSTRUKTUR */}
@@ -638,7 +663,7 @@ export default function JemaatApp() {
                       <span className="jkn-row-label">Nomor Induk Keanggotaan (NIK)</span>
                       <strong className="jkn-row-val jkn-red">{member.nik}</strong>
                     </div>
-                    <span className="jkn-tag-locked"><Icon name="lock" size={12} /> ID/NIK Terkunci</span>
+                    <LockedTag text="ID/NIK Terkunci" tooltipText="NIK terkunci otomatis oleh sistem. Hubungi administrator gereja jika ada kesalahan data." />
                   </div>
 
                   {/* Nama Lengkap */}
@@ -806,7 +831,7 @@ export default function JemaatApp() {
                       <span className="jkn-row-label">Wilayah Pelayanan Gereja</span>
                       <strong className="jkn-row-val">{member.nama_wilayah || 'Wilayah 1'}</strong>
                     </div>
-                    <span className="jkn-tag-locked"><Icon name="lock" size={12} /> Tetap / Terkunci</span>
+                    <LockedTag text="Tetap / Terkunci" tooltipText="Wilayah pelayanan terkunci otomatis oleh sistem. Hubungi administrator gereja jika ada kesalahan data." />
                   </div>
 
                   {/* Status Baptis */}
