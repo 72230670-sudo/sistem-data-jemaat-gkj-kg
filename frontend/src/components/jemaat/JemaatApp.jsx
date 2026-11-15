@@ -473,7 +473,7 @@ export default function JemaatApp() {
               onClick={() => setActiveTab('peserta')}
             >
               <Icon name="person" size={16} />
-              <span>Kepesertaan Terdaftar (Profil)</span>
+              <span>Keanggotaan Terdaftar (Profil)</span>
             </button>
             <button
               type="button"
@@ -514,7 +514,7 @@ export default function JemaatApp() {
         )}
 
         {/* ========================================================= */}
-        {/* MODE 1: KEPESERTAAN TERDAFTAR (PROFIL JEMAAT & SWITCHER)  */}
+        {/* MODE 1: KEANGGOTAAN TERDAFTAR (PROFIL JEMAAT & SWITCHER)  */}
         {/* ========================================================= */}
         {activeTab === 'peserta' && (
           <div className="jkn-profile-grid">
