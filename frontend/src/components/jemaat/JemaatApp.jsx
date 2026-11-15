@@ -82,9 +82,19 @@ function LockedTag({
   )
 }
 
-export function LoginPage({ onLogin, onDemo, error }) {
+export function LoginPage({ onLogin, onDemo, error, success = false }) {
   const [nik, setNik] = useState('')
   const [password, setPassword] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    if (isSubmitting || success) return
+    const ok = onLogin(nik, password)
+    if (ok) {
+      setIsSubmitting(true)
+    }
+  }
 
   return (
     <main className="jkn-login-screen">
@@ -95,7 +105,14 @@ export function LoginPage({ onLogin, onDemo, error }) {
         <h1>Selamat datang, Jemaat</h1>
         <p className="jkn-login-sub">Portal Mandiri Sistem Informasi Data Jemaat GKJ Kotagede</p>
 
-        <form onSubmit={(e) => { e.preventDefault(); onLogin(nik, password) }}>
+        <form onSubmit={handleSubmit}>
+          {success && (
+            <div className="jkn-alert-success" role="status">
+              <span>✅</span>
+              <span>Berhasil masuk! Mengarahkan ke portal jemaat...</span>
+            </div>
+          )}
+
           <label className="jkn-field">
             <span>NOMOR INDUK KEANGGOTAAN (NIK)</span>
             <input
@@ -128,8 +145,8 @@ export function LoginPage({ onLogin, onDemo, error }) {
 
           {error && <p role="alert" className="jkn-alert-error">{error}</p>}
 
-          <button className="jkn-btn-primary jkn-btn-block" type="submit">
-            Masuk ke Web Portal Jemaat
+          <button className="jkn-btn-primary jkn-btn-block" type="submit" disabled={isSubmitting || success}>
+            {success ? 'Mengarahkan...' : 'Masuk ke Web Portal Jemaat'}
           </button>
         </form>
 
@@ -348,6 +365,7 @@ export default function JemaatApp() {
   const [selectedId, setSelectedId] = useState(null)
   const [activeTab, setActiveTab] = useState('peserta') // 'peserta' (Profil) | 'kk' (Nomor Kartu Keluarga)
   const [loginError, setLoginError] = useState('')
+  const [loginSuccess, setLoginSuccess] = useState(false)
   const [notice, setNotice] = useState('')
 
   // Modal edit per-baris (Gaya JKN Mobile dalam Dialog Web Modern)
@@ -371,14 +389,20 @@ export default function JemaatApp() {
     const user = authenticateDemo(data.members, nik, password)
     if (!user) {
       setLoginError('NIK atau tanggal lahir tidak sesuai. Format password: DDMMYYYY (contoh: 12051992).')
-      return
+      setLoginSuccess(false)
+      return false
     }
-    actorRef.current = user.id
-    setActorId(user.id)
-    setSelectedId(user.id)
     setLoginError('')
-    setActiveTab('peserta')
-    setNotice(`Selamat datang, ${user.nama_lengkap.split(' ')[0]}!`)
+    setLoginSuccess(true)
+    setTimeout(() => {
+      actorRef.current = user.id
+      setActorId(user.id)
+      setSelectedId(user.id)
+      setActiveTab('peserta')
+      setNotice(`Selamat datang, ${user.nama_lengkap.split(' ')[0]}!`)
+      setLoginSuccess(false)
+    }, 700)
+    return true
   }
 
   function handleLogout() {
@@ -387,6 +411,7 @@ export default function JemaatApp() {
     setSelectedId(null)
     setModalOpen(false)
     setNotice('')
+    setLoginSuccess(false)
   }
 
   function handleSwitchMember(nikTarget) {
@@ -479,7 +504,14 @@ export default function JemaatApp() {
   }
 
   if (!actor) {
-    return <LoginPage onLogin={handleLogin} onDemo={() => data.members[0]} error={loginError} />
+    return (
+      <LoginPage
+        onLogin={handleLogin}
+        onDemo={() => data.members[0]}
+        error={loginError}
+        success={loginSuccess}
+      />
+    )
   }
 
   const isSelf = member.id === actorId

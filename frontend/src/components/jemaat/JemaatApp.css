@@ -1185,6 +1185,22 @@
   margin: 12px 0 0;
 }
 
+.jkn-alert-success {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #ecfdf5;
+  border: 1px solid #bbf7d0;
+  color: #15803d;
+  padding: 11px 15px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-align: left;
+  animation: jknAlertFadeIn 0.2s ease-out;
+}
+
 .jkn-modal-footer {
   padding: 14px 20px;
   background-color: #fafbfc;
