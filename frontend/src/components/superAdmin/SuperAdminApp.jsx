@@ -163,9 +163,6 @@ export default function SuperAdminApp() {
               <span>Super Admin</span>
             </div>
           </div>
-          <div className="sa-footer-actions">
-            <span style={{ fontSize: 11, color: '#94a3b8' }}>Sistem Informasi GKJ Kotagede</span>
-          </div>
         </div>
       </aside>
 

@@ -137,7 +137,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 12px;
+  margin-bottom: 0;
 }
 
 .sa-user-avatar {
