@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import logo from '../../assets/logo_gkjkg.jpg'
+import GkjLogo from '../common/GkjLogo.jsx'
 import {
   ageFromDate, authenticateDemo, createDemoData, datePassword, familyMembers,
   formatDate, getValue, localCalendarDate, profileSections,
@@ -100,7 +100,7 @@ export function LoginPage({ onLogin, onDemo, error, success = false }) {
     <main className="jkn-login-screen">
       <div className="jkn-login-box">
         <div className="jkn-login-brand-icon">
-          <span>GKJ</span>
+          <GkjLogo size={72} />
         </div>
         <h1>Selamat datang, Jemaat</h1>
         <p className="jkn-login-sub">Portal Mandiri Sistem Informasi Data Jemaat GKJ Kotagede</p>
@@ -179,7 +179,7 @@ export function MemberCard({ member, family, self }) {
       <div className="jkn-card-watermark" aria-hidden="true" />
       <div className="jkn-card-head">
         <div className="jkn-card-logo-wrap">
-          <img src={logo} alt="" className="jkn-card-logo" />
+          <GkjLogo size={34} />
           <div>
             <strong>GKJ KOTAGEDE</strong>
             <span>Gereja Kristen Jawa · Yogyakarta</span>
@@ -525,7 +525,7 @@ export default function JemaatApp() {
       <header className="jkn-web-navbar">
         <div className="jkn-nav-container">
           <div className="jkn-nav-brand">
-            <img src={logo} alt="GKJ Kotagede" className="jkn-nav-logo" />
+            <GkjLogo size={40} />
             <div className="jkn-nav-brand-text">
               <span className="jkn-brand-title">GKJ KOTAGEDE</span>
               <span className="jkn-brand-sub">Sistem Informasi Data Jemaat</span>
