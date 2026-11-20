@@ -476,20 +476,20 @@ export function addMember(data, newMemberData) {
   }
 
   const wil = WILAYAH_LIST.find((w) => w.id_wil === newMemberData.id_wil)
-  const nama_wilayah = wil ? wil.nama_wilayah : (newMemberData.nama_wilayah || 'Wilayah 1')
+  const nama_wilayah = wil ? wil.nama_wilayah : (newMemberData.nama_wilayah || '')
 
   const fullMember = {
     nik: newMemberData.nik.trim(),
-    id_wil: newMemberData.id_wil || 'WIL-01',
+    id_wil: newMemberData.id_wil || '',
     nama_wilayah,
     no_kk: newMemberData.no_kk ? newMemberData.no_kk.trim() : '',
     nama_lengkap: newMemberData.nama_lengkap.trim(),
-    jenis_kelamin: newMemberData.jenis_kelamin || 'Laki-laki',
+    jenis_kelamin: newMemberData.jenis_kelamin || '',
     tmpt_lhr: newMemberData.tmpt_lhr || 'Yogyakarta',
     tgl_lhr: newMemberData.tgl_lhr || '',
     gol_darah: newMemberData.gol_darah || 'Belum diketahui',
     status_jemaat: newMemberData.status_jemaat || 'Warga jemaat',
-    hubungan_keluarga: newMemberData.hubungan_keluarga || 'Kepala Keluarga',
+    hubungan_keluarga: newMemberData.hubungan_keluarga || 'Anggota',
     foto: newMemberData.foto || '',
     no_whatsapp: newMemberData.no_whatsapp || '',
     alamat: newMemberData.alamat || '',

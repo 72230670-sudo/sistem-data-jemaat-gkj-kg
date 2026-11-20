@@ -14,17 +14,17 @@ function getCleanFormData(initialData, families) {
       ...initialData,
       email: initialData.user?.email || initialData.email || '',
       gerejawi: {
-        status_baptis: 'Belum',
+        status_baptis: '',
         tgl_baptis: '',
-        status_sidi: 'Belum',
+        status_sidi: '',
         tgl_sidi: '',
-        status_pernikahan: 'Belum menikah',
+        status_pernikahan: '',
         tgl_pernikahan: '',
-        status_keaktifan: 'Aktif',
+        status_keaktifan: '',
         ...initialData.gerejawi,
       },
       pendidikan: {
-        pendidikan_terakhir: 'S1',
+        pendidikan_terakhir: '',
         nama_sekolah: '',
         thn_lulus: '',
         ...initialData.pendidikan,
@@ -45,20 +45,20 @@ function getCleanFormData(initialData, families) {
     }
   }
 
-  const defaultNoKk = (initialData && initialData.no_kk) || (families[0] ? families[0].no_kk : '')
+  const defaultNoKk = (initialData && initialData.no_kk) || ''
   return {
     nik: '',
     nama_lengkap: '',
-    jenis_kelamin: 'Laki-laki',
+    jenis_kelamin: '',
     tmpt_lhr: '',
     tgl_lhr: '',
-    gol_darah: 'O',
-    status_jemaat: 'Warga jemaat',
-    hubungan_keluarga: 'Kepala Keluarga',
+    gol_darah: '',
+    status_jemaat: '',
+    hubungan_keluarga: '',
     no_whatsapp: '',
     email: '',
-    id_wil: 'WIL-01',
-    nama_wilayah: 'Wilayah 1',
+    id_wil: '',
+    nama_wilayah: '',
     no_kk: defaultNoKk,
     new_kk: {
       no_kk: '',
@@ -74,16 +74,16 @@ function getCleanFormData(initialData, families) {
       kode_pos: '',
     },
     gerejawi: {
-      status_baptis: 'Belum',
+      status_baptis: '',
       tgl_baptis: '',
-      status_sidi: 'Belum',
+      status_sidi: '',
       tgl_sidi: '',
-      status_pernikahan: 'Belum menikah',
+      status_pernikahan: '',
       tgl_pernikahan: '',
-      status_keaktifan: 'Aktif',
+      status_keaktifan: '',
     },
     pendidikan: {
-      pendidikan_terakhir: 'S1',
+      pendidikan_terakhir: '',
       nama_sekolah: '',
       thn_lulus: '',
     },
@@ -232,8 +232,26 @@ export default function JemaatFormModal({
       return
     }
 
+    if (!form.jenis_kelamin) {
+      setErrorMsg('Jenis kelamin wajib dipilih.')
+      setActiveTab('identitas')
+      return
+    }
+
     if (!form.tgl_lhr) {
       setErrorMsg('Tanggal lahir wajib diisi.')
+      setActiveTab('identitas')
+      return
+    }
+
+    if (!form.status_jemaat) {
+      setErrorMsg('Status jemaat wajib dipilih.')
+      setActiveTab('identitas')
+      return
+    }
+
+    if (!form.id_wil) {
+      setErrorMsg('Wilayah pelayanan wajib dipilih.')
       setActiveTab('identitas')
       return
     }
@@ -242,7 +260,13 @@ export default function JemaatFormModal({
     let finalNoKk = form.no_kk
     let newFamilyObject = null
 
-    if (!useExistingKK) {
+    if (useExistingKK) {
+      if (!form.no_kk) {
+        setErrorMsg('Silakan pilih Kartu Keluarga (KK) terdaftar.')
+        setActiveTab('keluarga')
+        return
+      }
+    } else {
       if (!form.new_kk?.no_kk || !form.new_kk.no_kk.trim()) {
         setErrorMsg('Nomor Kartu Keluarga (KK) baru wajib diisi.')
         setActiveTab('keluarga')
@@ -258,6 +282,12 @@ export default function JemaatFormModal({
         ...form.new_kk,
         no_kk: finalNoKk,
       }
+    }
+
+    if (!form.hubungan_keluarga) {
+      setErrorMsg('Status / hubungan dalam keluarga wajib dipilih.')
+      setActiveTab('keluarga')
+      return
     }
 
     const payload = {
@@ -381,12 +411,15 @@ export default function JemaatFormModal({
                 </div>
 
                 <div className="sa-form-group">
-                  <label className="sa-form-label">Jenis Kelamin</label>
+                  <label className="sa-form-label">
+                    Jenis Kelamin<span className="req">*</span>
+                  </label>
                   <select
                     className="sa-select"
                     value={form.jenis_kelamin}
                     onChange={(e) => handleChange('jenis_kelamin', e.target.value)}
                   >
+                    <option value="">-- Pilih Jenis Kelamin --</option>
                     <option value="Laki-laki">Laki-laki</option>
                     <option value="Perempuan">Perempuan</option>
                   </select>
@@ -399,6 +432,7 @@ export default function JemaatFormModal({
                     value={form.gol_darah}
                     onChange={(e) => handleChange('gol_darah', e.target.value)}
                   >
+                    <option value="">-- Pilih Golongan Darah --</option>
                     <option value="Belum diketahui">Belum diketahui</option>
                     <option value="A">A</option>
                     <option value="B">B</option>
@@ -432,19 +466,24 @@ export default function JemaatFormModal({
                 </div>
 
                 <div className="sa-form-group">
-                  <label className="sa-form-label">Status Jemaat</label>
+                  <label className="sa-form-label">
+                    Status Jemaat<span className="req">*</span>
+                  </label>
                   <select
                     className="sa-select"
                     value={form.status_jemaat}
                     onChange={(e) => handleChange('status_jemaat', e.target.value)}
                   >
+                    <option value="">-- Pilih Status Jemaat --</option>
                     <option value="Warga jemaat">Warga jemaat</option>
                     <option value="Simpatisan">Simpatisan</option>
                   </select>
                 </div>
 
                 <div className="sa-form-group">
-                  <label className="sa-form-label">Wilayah Pelayanan</label>
+                  <label className="sa-form-label">
+                    Wilayah Pelayanan<span className="req">*</span>
+                  </label>
                   <select
                     className="sa-select"
                     value={form.id_wil}
@@ -454,6 +493,7 @@ export default function JemaatFormModal({
                       handleChange('nama_wilayah', wil?.nama_wilayah || '')
                     }}
                   >
+                    <option value="">-- Pilih Wilayah Pelayanan --</option>
                     {WILAYAH_LIST.map((w) => (
                       <option key={w.id_wil} value={w.id_wil}>
                         {w.nama_wilayah}
@@ -528,6 +568,7 @@ export default function JemaatFormModal({
                         value={form.no_kk}
                         onChange={(e) => handleChange('no_kk', e.target.value)}
                       >
+                        <option value="">-- Pilih Kartu Keluarga (KK) --</option>
                         {families.map((f) => (
                           <option key={f.no_kk} value={f.no_kk}>
                             {f.no_kk} — Kepala: {f.nama_kepala_keluarga} ({f.alamat})
@@ -537,12 +578,15 @@ export default function JemaatFormModal({
                     </div>
 
                     <div className="sa-form-group">
-                      <label className="sa-form-label">Hubungan / Status Dalam Keluarga</label>
+                      <label className="sa-form-label">
+                        Hubungan / Status Dalam Keluarga<span className="req">*</span>
+                      </label>
                       <select
                         className="sa-select"
                         value={form.hubungan_keluarga}
                         onChange={(e) => handleChange('hubungan_keluarga', e.target.value)}
                       >
+                        <option value="">-- Pilih Hubungan Keluarga --</option>
                         {HUBUNGAN_KELUARGA_OPTIONS.map((opt) => (
                           <option key={opt} value={opt}>
                             {opt}
@@ -580,12 +624,15 @@ export default function JemaatFormModal({
                     </div>
 
                     <div className="sa-form-group">
-                      <label className="sa-form-label">Status Jemaat Ini dlm Keluarga</label>
+                      <label className="sa-form-label">
+                        Status Jemaat Ini dlm Keluarga<span className="req">*</span>
+                      </label>
                       <select
                         className="sa-select"
                         value={form.hubungan_keluarga}
                         onChange={(e) => handleChange('hubungan_keluarga', e.target.value)}
                       >
+                        <option value="">-- Pilih Hubungan Keluarga --</option>
                         {HUBUNGAN_KELUARGA_OPTIONS.map((opt) => (
                           <option key={opt} value={opt}>
                             {opt}
@@ -697,8 +744,14 @@ export default function JemaatFormModal({
                   <select
                     className="sa-select"
                     value={form.gerejawi.status_baptis}
-                    onChange={(e) => handleNestedChange('gerejawi', 'status_baptis', e.target.value)}
+                    onChange={(e) => {
+                      handleNestedChange('gerejawi', 'status_baptis', e.target.value)
+                      if (e.target.value !== 'Sudah') {
+                        handleNestedChange('gerejawi', 'tgl_baptis', '')
+                      }
+                    }}
                   >
+                    <option value="">-- Pilih Status Baptis --</option>
                     <option value="Belum">Belum</option>
                     <option value="Sudah">Sudah</option>
                   </select>
@@ -720,8 +773,14 @@ export default function JemaatFormModal({
                   <select
                     className="sa-select"
                     value={form.gerejawi.status_sidi}
-                    onChange={(e) => handleNestedChange('gerejawi', 'status_sidi', e.target.value)}
+                    onChange={(e) => {
+                      handleNestedChange('gerejawi', 'status_sidi', e.target.value)
+                      if (e.target.value !== 'Sudah') {
+                        handleNestedChange('gerejawi', 'tgl_sidi', '')
+                      }
+                    }}
                   >
+                    <option value="">-- Pilih Status Sidi --</option>
                     <option value="Belum">Belum</option>
                     <option value="Sudah">Sudah</option>
                   </select>
@@ -743,8 +802,14 @@ export default function JemaatFormModal({
                   <select
                     className="sa-select"
                     value={form.gerejawi.status_pernikahan}
-                    onChange={(e) => handleNestedChange('gerejawi', 'status_pernikahan', e.target.value)}
+                    onChange={(e) => {
+                      handleNestedChange('gerejawi', 'status_pernikahan', e.target.value)
+                      if (e.target.value !== 'Menikah') {
+                        handleNestedChange('gerejawi', 'tgl_pernikahan', '')
+                      }
+                    }}
                   >
+                    <option value="">-- Pilih Status Pernikahan --</option>
                     <option value="Belum menikah">Belum menikah</option>
                     <option value="Menikah">Menikah</option>
                     <option value="Cerai hidup">Cerai hidup</option>
@@ -771,6 +836,7 @@ export default function JemaatFormModal({
                     value={form.gerejawi.status_keaktifan}
                     onChange={(e) => handleNestedChange('gerejawi', 'status_keaktifan', e.target.value)}
                   >
+                    <option value="">-- Pilih Status Keaktifan --</option>
                     <option value="Aktif">Aktif</option>
                     <option value="Pasif">Pasif</option>
                     <option value="Pindah">Pindah</option>
@@ -794,6 +860,7 @@ export default function JemaatFormModal({
                     value={form.pendidikan.pendidikan_terakhir}
                     onChange={(e) => handleNestedChange('pendidikan', 'pendidikan_terakhir', e.target.value)}
                   >
+                    <option value="">-- Pilih Pendidikan Terakhir --</option>
                     <option value="Belum sekolah">Belum sekolah</option>
                     <option value="SD">SD</option>
                     <option value="SMP">SMP</option>
