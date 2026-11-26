@@ -379,6 +379,27 @@ export default function JemaatApp() {
   const member = relatives.find((item) => item.id === selectedId) || actor
   const family = member && data.families.find((item) => item.no_kk === member.no_kk)
 
+useEffect(() => {
+    if (actorId) return
+    const saved = localStorage.getItem('jemaatSession')
+    if (!saved) return
+    try {
+      const parsed = JSON.parse(saved)
+      const matched = data.members.find(
+        (m) => String(m.nik) === String(parsed.nik) || String(m.id) === String(parsed.id)
+      )
+      if (matched) {
+        actorRef.current = matched.id
+        setActorId(matched.id)
+        setSelectedId(matched.id)
+        setActiveTab('peserta')
+        setNotice(`Selamat datang, ${matched.nama_lengkap.split(' ')[0]}!`)
+      }
+    } catch {
+      // Abaikan jika format jemaatSession tidak valid
+    }
+  }, [actorId, data.members])
+
   useEffect(() => {
     if (!notice) return
     const timer = setTimeout(() => setNotice(''), 4500)
@@ -406,6 +427,8 @@ export default function JemaatApp() {
   }
 
   function handleLogout() {
+    localStorage.removeItem('jemaatSession')
+    localStorage.removeItem('dummyUserSession')
     actorRef.current = null
     setActorId(null)
     setSelectedId(null)
