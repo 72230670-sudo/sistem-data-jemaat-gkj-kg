@@ -1,0 +1,167 @@
+.auth-container {
+    min-height: 100vh;
+    background-color: #3f2823;
+    /* Warna latar belakang cokelat tua khas web GKJ Kotagede */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+    padding: 20px;
+}
+
+.auth-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 450px;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.auth-icon-church {
+    font-size: 2.5rem;
+    color: #3d2c24;
+    margin-bottom: 10px;
+}
+
+.auth-header h2 {
+    font-size: 1.5rem;
+    color: #3d2c24;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.auth-header p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Tab Switcher Style */
+.auth-tabs {
+    display: flex;
+    background: #f1f2f6;
+    padding: 4px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #555;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+    background: #f7f2be;
+    /* Diubah dari biru ke cokelat tua */
+    color: #3f2823;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Styling */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.input-group label {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #3f2823;
+}
+
+.input-field-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid #6d473e;
+    border-radius: 6px;
+    padding: 0 12px;
+    background: #fff;
+    transition: border-color 0.2s;
+}
+
+.input-field-wrapper:focus-within {
+    border-color: #3f2823;
+    /* Diubah dari biru ke cokelat tua */
+}
+
+.input-icon {
+    font-size: 1rem;
+    margin-right: 10px;
+    color: #718093;
+}
+
+.input-field-wrapper input {
+    width: 100%;
+    padding: 12px 0;
+    border: none;
+    outline: none;
+    font-size: 0.95rem;
+    color: #9a9a9a;
+    background: transparent;
+}
+
+.input-hint {
+    font-size: 0.75rem;
+    color: #3f2823;
+    line-height: 1.4;
+    margin-top: 4px;
+}
+
+/* Style untuk Tombol Ikon Mata */
+.eye-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #718093;
+    transition: color 0.2s;
+}
+
+.eye-btn:hover {
+    color: #773f25;
+}
+
+/* Tombol Submit */
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 0.95rem;
+    cursor: pointer;
+    color: white;
+    background-color: #d35400;
+    /* Disamakan dengan tombol oranye/terakota di Landing Page */
+    transition: background-color 0.2s, transform 0.1s;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    background-color: #b94600;
+    transform: translateY(-1px);
+}

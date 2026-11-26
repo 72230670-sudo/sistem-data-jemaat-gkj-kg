@@ -1,22 +1,41 @@
-/* Styling Utama Landing Page GKJ Kotagede */
-.gkj-landing {
-    font-family: 'Georgia', serif;
-    background-color: #fcfbfa;
-    color: #2c2c2c;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+/* Pengaturan Dasar Layar agar Full-Width */
+body,
+html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+    background-color: #ffffff;
 }
 
-/* Navbar */
+/* Styling Utama Landing Page GKJ Kotagede */
+.gkj-landing {
+    font-family: var(--heading, 'Georgia', serif);
+    background-color: var(--bg, #fcfbfa);
+    color: var(--text-h, #3f2823);
+    min-height: 100vh;
+    width: 100%;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* Navbar & Dropdown Menu */
 .gkj-navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 60px;
-    background-color: #ffffff;
-    border-bottom: 1px solid #eaeaea;
+    background-color: var(--card-bg, #ffffff);
+    border-bottom: 1px solid var(--border, #eaeaea);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .navbar-brand {
@@ -26,47 +45,86 @@
     font-weight: bold;
     font-size: 1.1rem;
     letter-spacing: 1px;
+    color: #3d2c24;
+    /* Menjadikan warna teks logo cokelat tua agar jelas terbaca */
 }
 
-.navbar-icon {
-    font-size: 1.2rem;
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    color: #3f2823;
 }
 
 .navbar-menu {
     display: flex;
     gap: 30px;
+    align-items: center;
 }
 
 .navbar-menu a {
     text-decoration: none;
-    color: #444;
+    color: var(--text, #444);
     font-size: 0.9rem;
-    font-family: sans-serif;
+    font-family: var(--sans, sans-serif);
     font-weight: 600;
     transition: color 0.2s;
 }
 
 .navbar-menu a:hover {
+    color: var(--accent, #d35400);
+}
+
+.dropdown-container {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #ffffff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+    min-width: 200px;
+    z-index: 100;
+}
+
+.dropdown-menu a {
+    padding: 10px 20px;
+    color: #333;
+    font-weight: normal;
+}
+
+.dropdown-menu a:hover {
+    background: #f4f4f4;
     color: #d35400;
 }
 
-/* Hero Section (Menggunakan logo_gkjkg.jpg sebagai background penuh) */
+/* Hero Section */
 .gkj-hero {
-    flex: 1;
+    width: 100%;
+    min-height: 450px;
     background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
         url('../../assets/logo_gkjkg.jpg') center/cover no-repeat;
     display: flex;
     align-items: center;
-    padding: 80px 10%;
-    color: white;
+    padding: 50px 60px;
+    box-sizing: border-box;
 }
 
 .hero-content {
-    max-width: 700px;
+    max-width: 650px;
 }
 
 .hero-date {
-    font-family: sans-serif;
+    font-family: var(--sans, sans-serif);
     font-size: 0.85rem;
     letter-spacing: 2px;
     color: #f39c12;
@@ -77,6 +135,7 @@
 
 .hero-title {
     font-size: 3.2rem;
+    color: #ffffff;
     font-weight: normal;
     line-height: 1.2;
     margin-bottom: 15px;
@@ -84,18 +143,19 @@
 
 .hero-subtitle {
     font-size: 1.2rem;
-    font-family: sans-serif;
+    color: #ffffff;
+    font-family: var(--sans, sans-serif);
     margin-bottom: 30px;
     opacity: 0.9;
 }
 
 /* Tombol Dashboard */
 .dashboard-btn {
-    background-color: #d35400;
+    background-color: var(--accent, #d35400);
     color: white;
     border: none;
     padding: 12px 30px;
-    font-family: sans-serif;
+    font-family: var(--sans, sans-serif);
     font-weight: bold;
     font-size: 0.95rem;
     letter-spacing: 1px;
@@ -113,8 +173,9 @@
 .gkj-stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    background-color: #ffffff;
-    border-top: 1px solid #eaeaea;
+    background-color: var(--card-bg, #ffffff);
+    border-top: 1px solid var(--border, #eaeaea);
+    border-bottom: 1px solid var(--border, #eaeaea);
     padding: 30px 40px;
     text-align: center;
     gap: 20px;
@@ -127,10 +188,70 @@
     gap: 5px;
 }
 
-.stat-icon {
+.stat-icon1 {
     font-size: 1.2rem;
     margin-bottom: 5px;
-    background: #f4f4f4;
+    background: #4f3022;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.stat-icon2 {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    background: #626a5c;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.stat-icon3 {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    background: #d2bb38;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.stat-icon4 {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    background: #715141;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.stat-icon5 {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    background: #ad3434;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.stat-icon6 {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    background: #4f3022;
     width: 40px;
     height: 40px;
     display: flex;
@@ -140,14 +261,410 @@
 }
 
 .stat-label {
-    font-family: sans-serif;
+    font-family: var(--sans, sans-serif);
     font-size: 0.8rem;
     color: #777;
 }
 
 .stat-value {
-    font-family: sans-serif;
+    font-family: var(--sans, sans-serif);
     font-size: 1.2rem;
     font-weight: bold;
     color: #333;
+}
+
+/* Section Common Container */
+.section-container {
+    max-width: 1126px;
+    margin: 40px auto;
+    padding: 50px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    border-radius: 12px;
+    color: #3f2823;
+}
+
+.center-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-heading {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    font-weight: normal;
+    color: #3f2823;
+}
+
+.text-link {
+    color: #d35400;
+    font-weight: bold;
+    text-decoration: none;
+    font-family: sans-serif;
+    font-size: 0.9rem;
+}
+
+/* Sambutan Section */
+.sambutan-section {
+    background-color: #ffffff;
+    max-width: 1126px;
+    margin: 40px auto;
+    padding: 50px;
+    border-radius: 12px;
+    box-sizing: border-box;
+}
+
+.sambutan-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 50px;
+    align-items: center;
+    color: #3f2823;
+}
+
+.pastor-card {
+    position: relative;
+    background: #e0e0e0;
+    height: 380px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.pastor-badge {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #3d2c24;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+.sambutan-text p {
+    line-height: 1.8;
+    color: #555;
+    margin-bottom: 20px;
+    font-size: 1.05rem;
+}
+
+/* Cards Grid 3 */
+.cards-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    color: #3f2823;
+}
+
+.info-card,
+.news-card {
+    background: #ffffff;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+    transition: transform 0.2s;
+}
+
+.info-card:hover,
+.news-card:hover {
+    transform: translateY(-5px);
+}
+
+.highlight-card {
+    background: #fffdf0;
+    border-color: #f39c12;
+}
+
+.card-icon-small {
+    font-size: 1.5rem;
+}
+
+.card-action {
+    color: #d35400;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-top: auto;
+}
+
+/* Jadwal & Lokasi */
+.jadwal-lokasi-section {
+    background: #f5f4f0;
+    padding: 40px 20px;
+}
+
+.jadwal-lokasi-box {
+    background: #3f2823;
+    color: white;
+    border-radius: 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+    max-width: 1126px;
+    margin: 0 auto;
+}
+
+.jadwal-col {
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.lokasi-col {
+    padding: 50px;
+    background: #4e3631;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    color: #ffffff;
+}
+
+.jadwal-row {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.j-time {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin: 5px 0;
+}
+
+.lokasi-pin {
+    font-size: 2.5rem;
+    color: #f39c12;
+}
+
+.lokasi-btn {
+    background-color: #d35400;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Informasi Terbaru */
+.header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 40px;
+    color: #3f2823;
+}
+
+.news-card {
+    padding: 0;
+    overflow: hidden;
+}
+
+.news-img {
+    height: 180px;
+    background: #ddd;
+    background-size: cover;
+    background-position: center;
+}
+
+.news-card h3,
+.news-card span,
+.news-card a {
+    padding: 0 20px;
+}
+
+.news-card h3 {
+    font-size: 1.1rem;
+    margin: 10px 0;
+}
+
+.news-category {
+    font-size: 0.75rem;
+    color: #d35400;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.news-date {
+    font-size: 0.75rem;
+    color: #888;
+    margin-bottom: 15px;
+}
+
+/* Warta & Agenda */
+.warta-section {
+    background: #ffffff;
+}
+
+.warta-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.warta-card-pdf,
+.agenda-card-box {
+    background: #f9f8f6;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    padding: 30px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.agenda-card-box {
+    background: #fffdf0;
+    border-color: #f39c12;
+}
+
+.pdf-date-box {
+    background: #3d2c24;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.pdf-download-link {
+    color: #d35400;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+/* Action Banner */
+.action-banner-section {
+    background: #f5f4f0;
+}
+
+.action-cards-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.action-box {
+    background: #f9f8f6;
+    border: 1px solid #eaeaea;
+    padding: 40px;
+    border-radius: 8px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.action-big-icon {
+    font-size: 2.5rem;
+    background: #eef2f5;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+/* Footer */
+.gkj-footer {
+    background-color: #2b1d16;
+    color: #ffffff;
+    padding: 60px 10% 30px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1.5fr;
+    gap: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-col-info p {
+    color: #ccc;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 10px 0;
+}
+
+.footer-socials {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.footer-socials span {
+    background: rgba(255, 255, 255, 0.1);
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.footer-col-links h4,
+.footer-col-contact h4 {
+    color: #f39c12;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+.footer-col-links ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-col-links a {
+    color: #ccc;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.footer-col-links a:hover {
+    color: white;
+}
+
+.footer-col-contact p {
+    color: #ccc;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.wa-btn {
+    background-color: #f39c12;
+    color: #2b1d16;
+    border: none;
+    padding: 12px 20px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 15px;
+    width: 100%;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 30px;
+    color: #888;
+    font-size: 0.85rem;
 }
