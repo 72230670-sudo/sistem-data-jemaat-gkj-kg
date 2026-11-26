@@ -11,14 +11,15 @@ import {
 import './SuperAdminApp.css'
 
 import DaftarJemaatView from './DaftarJemaatView.jsx'
+import DashboardView from './DashboardView.jsx'
 import DataKeluargaView from './DataKeluargaView.jsx'
 import DetailJemaatModal from './DetailJemaatModal.jsx'
 import JemaatFormModal from './JemaatFormModal.jsx'
 
 export default function SuperAdminApp() {
   const [data, setData] = useState(() => loadMasterData())
-  // 2 Menu utama pengelolaan master data: 'daftar' (Data Jemaat) & 'keluarga' (Data Keluarga)
-  const [activeMenu, setActiveMenu] = useState('daftar')
+  // Menu utama: 'dashboard' (Dashboard Statistik), 'daftar' (Data Jemaat), & 'keluarga' (Data Keluarga)
+  const [activeMenu, setActiveMenu] = useState('dashboard')
 
   // Modal State
   const [formModalOpen, setFormModalOpen] = useState(false)
@@ -112,7 +113,7 @@ export default function SuperAdminApp() {
 
   return (
     <div className="sa-app-layout">
-      {/* SIDEBAR NAVIGATION: HANYA DATA JEMAAT & DATA KELUARGA */}
+      {/* SIDEBAR NAVIGATION */}
       <aside className="sa-sidebar">
         <div className="sa-sidebar-header">
           <div className="sa-sidebar-logo">⛪</div>
@@ -123,6 +124,15 @@ export default function SuperAdminApp() {
         </div>
 
         <nav className="sa-sidebar-nav">
+          <button
+            className={`sa-nav-item ${activeMenu === 'dashboard' ? 'active' : ''}`}
+            type="button"
+            onClick={() => setActiveMenu('dashboard')}
+          >
+            <span className="sa-nav-icon">📊</span>
+            <span>Dashboard</span>
+          </button>
+
           <button
             className={`sa-nav-item ${activeMenu === 'daftar' ? 'active' : ''}`}
             type="button"
@@ -172,10 +182,13 @@ export default function SuperAdminApp() {
         <header className="sa-topbar">
           <div className="sa-page-title">
             <h1>
+              {activeMenu === 'dashboard' && 'Dashboard Statistik Jemaat'}
               {activeMenu === 'daftar' && 'Master Data Jemaat'}
               {activeMenu === 'keluarga' && 'Pengelolaan Master Data Keluarga'}
             </h1>
             <p>
+              {activeMenu === 'dashboard' &&
+                'Ringkasan demografi jemaat, kategori usia, status sakramen, dan sebaran per wilayah'}
               {activeMenu === 'daftar' &&
                 'CRUD Master Data Identitas (NIK, TTL, Alamat dll), Data Gerejawi, Data Pendidikan & Pekerjaan'}
               {activeMenu === 'keluarga' &&
@@ -186,6 +199,8 @@ export default function SuperAdminApp() {
 
         {/* CONTAINER CONTENT */}
         <div className="sa-container">
+          {activeMenu === 'dashboard' && <DashboardView data={data} />}
+
           {activeMenu === 'daftar' && (
             <DaftarJemaatView
               data={data}
