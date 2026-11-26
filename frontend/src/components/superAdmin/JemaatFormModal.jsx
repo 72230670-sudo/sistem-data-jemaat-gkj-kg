@@ -6,6 +6,14 @@ import {
   WILAYAH_LIST,
 } from '../../lib/superAdminData.js'
 
+const FORM_STEPS = [
+  'identitas',
+  'keluarga',
+  'gerejawi',
+  'pendidikan_pekerjaan',
+  'pelayanan_dokumen',
+]
+
 function getCleanFormData(initialData, families) {
   const isRealEdit = Boolean(initialData && initialData.nik)
 
@@ -117,6 +125,24 @@ export default function JemaatFormModal({
   const [resetSuccessNotice, setResetSuccessNotice] = useState(false)
 
   if (!isOpen) return null
+
+  const currentStepIndex = FORM_STEPS.indexOf(activeTab)
+  const isFirstStep = currentStepIndex <= 0
+  const isLastStep = currentStepIndex >= FORM_STEPS.length - 1
+
+  function handlePrevStep() {
+    if (!isFirstStep) {
+      setErrorMsg('')
+      setActiveTab(FORM_STEPS[currentStepIndex - 1])
+    }
+  }
+
+  function handleNextStep() {
+    if (!isLastStep) {
+      setErrorMsg('')
+      setActiveTab(FORM_STEPS[currentStepIndex + 1])
+    }
+  }
 
   function handleResetForm() {
     setForm(getCleanFormData(initialData, families))
@@ -298,7 +324,6 @@ export default function JemaatFormModal({
 
     try {
       onSave(payload, isEditing ? initialData.nik : undefined)
-      // Form kembali bersih setelah data entry disimpan
       setForm(getCleanFormData(null, families))
       setActiveTab('identitas')
       setErrorMsg('')
@@ -388,7 +413,6 @@ export default function JemaatFormModal({
                   <input
                     className="sa-input"
                     type="text"
-                    required
                     placeholder="Contoh: 3471015205920001"
                     value={form.nik}
                     onChange={(e) => handleChange('nik', e.target.value)}
@@ -403,7 +427,6 @@ export default function JemaatFormModal({
                   <input
                     className="sa-input"
                     type="text"
-                    required
                     placeholder="Nama lengkap jemaat"
                     value={form.nama_lengkap}
                     onChange={(e) => handleChange('nama_lengkap', e.target.value)}
@@ -459,7 +482,6 @@ export default function JemaatFormModal({
                   <input
                     className="sa-input"
                     type="date"
-                    required
                     value={form.tgl_lhr}
                     onChange={(e) => handleChange('tgl_lhr', e.target.value)}
                   />
@@ -1095,12 +1117,28 @@ export default function JemaatFormModal({
                 ✓ Form dibersihkan
               </span>
             )}
-            <button className="sa-btn-secondary" type="button" onClick={handleCloseModal}>
-              Batal
-            </button>
-            <button className="sa-btn-primary" type="submit">
-              💾 Simpan Master Data Jemaat
-            </button>
+
+            <div style={{ display: 'flex', gap: 8, marginLeft: 'auto' }}>
+              {!isFirstStep && (
+                <button className="sa-btn-secondary" type="button" onClick={handlePrevStep}>
+                  ← Sebelumnya
+                </button>
+              )}
+
+              <button className="sa-btn-secondary" type="button" onClick={handleCloseModal}>
+                Batal
+              </button>
+
+              {!isLastStep ? (
+                <button className="sa-btn-primary" type="button" onClick={handleNextStep}>
+                  Next
+                </button>
+              ) : (
+                <button className="sa-btn-primary" type="submit">
+                  💾 Simpan Master Data Jemaat
+                </button>
+              )}
+            </div>
           </div>
         </form>
       </div>
