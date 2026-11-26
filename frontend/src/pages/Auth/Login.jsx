@@ -3,6 +3,36 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabaseClient';
 import './Login.css';
 
+// Data dummy sementara untuk uji coba login lokal dari homepage
+const DUMMY_PENGGUNA = [
+    {
+        label: 'Super Admin',
+        email: 'superadmin@gkj.test',
+        password: '123',
+        role: 'superAdmin',
+        nama: 'Super Admin GKJ Kotagede',
+        redirect: '/super-admin'
+    },
+    {
+        label: 'Admin Wilayah',
+        email: 'wilayah@gkj.test',
+        password: '123',
+        role: 'adminWilayah',
+        nama: 'Admin Wilayah 1',
+        redirect: '/admin-wilayah'
+    }
+];
+
+const DUMMY_JEMAAT = [
+    {
+        nik: '3471000001',
+        tgl_lhr: '1990-05-17',
+        raw_tgl: '19900517',
+        nama_lengkap: 'Maria Kristina Wibowo',
+        wilayah: 'Wilayah 1'
+    }
+];
+
 export default function Login() {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('pengguna');
@@ -39,7 +69,21 @@ export default function Login() {
         setLoading(true);
 
         if (activeTab === 'pengguna') {
-            // === LOGIKA LOGIN PENGGUNA / ADMIN (Supabase Auth) ===
+            // 1. Cek akun dummy terlebih dahulu
+            const dummyUser = DUMMY_PENGGUNA.find(
+                (u) =>
+                    u.email.toLowerCase() === formData.username.trim().toLowerCase() &&
+                    u.password === formData.password
+            );
+
+            if (dummyUser) {
+                localStorage.setItem('dummyUserSession', JSON.stringify(dummyUser));
+                setLoading(false);
+                navigate(dummyUser.redirect);
+                return;
+            }
+
+            // 2. Jika bukan akun dummy, lanjut ke Supabase Auth
             try {
                 const { data, error } = await supabase.auth.signInWithPassword({
                     email: formData.username.trim(),
@@ -72,10 +116,21 @@ export default function Login() {
                 setLoading(false);
             }
         } else {
-            // === LOGIKA LOGIN JEMAAT (Mencocokkan NIK & tgl_lhr di Database) ===
-            try {
-                const formattedDate = formatTanggalLahir(formData.tanggalLahir);
+            // 1. Cek jemaat dummy terlebih dahulu
+            const formattedDate = formatTanggalLahir(formData.tanggalLahir);
+            const dummyJemaat = DUMMY_JEMAAT.find(
+                (j) => j.nik === formData.nik.trim() && j.tgl_lhr === formattedDate
+            );
 
+            if (dummyJemaat) {
+                localStorage.setItem('jemaatSession', JSON.stringify(dummyJemaat));
+                setLoading(false);
+                navigate('/dashboard-jemaat');
+                return;
+            }
+
+            // 2. Jika bukan dummy, lanjut cek tabel jemaat di Database
+            try {
                 const { data, error } = await supabase
                     .from('jemaat')
                     .select('*')
@@ -88,8 +143,7 @@ export default function Login() {
                 }
 
                 localStorage.setItem('jemaatSession', JSON.stringify(data));
-                alert(`Selamat datang, ${data.nama_lengkap || 'Jemaat'}!`);
-                // navigate('/dashboard-jemaat');
+                navigate('/dashboard-jemaat');
             } catch (error) {
                 alert('Login Jemaat Gagal: ' + error.message);
             } finally {
@@ -129,7 +183,6 @@ export default function Login() {
                 {/* Form Input */}
                 <form onSubmit={handleSubmit} className="auth-form">
                     {activeTab === 'pengguna' ? (
-                        /* Form untuk Pengguna / Admin */
                         <>
                             <div className="input-group">
                                 <label>Username / Email</label>
@@ -169,7 +222,6 @@ export default function Login() {
                             </div>
                         </>
                     ) : (
-                        /* Form untuk Jemaat (Berdasarkan NIK & Tanggal Lahir) */
                         <>
                             <div className="input-group">
                                 <label>NIK (10 Digit)</label>
@@ -218,6 +270,61 @@ export default function Login() {
                     <button type="submit" className="submit-btn" disabled={loading}>
                         {loading ? 'Memproses...' : 'Masuk'}
                     </button>
+
+                    {/* Shortcut Isi Cepat Akun Dummy untuk Testing */}
+                    <div style={{ marginTop: '14px', paddingTop: '12px', borderTop: '1px dashed #cbd5e1', textAlign: 'center' }}>
+                        <small style={{ display: 'block', color: '#64748b', marginBottom: '8px' }}>
+                            Mode Uji Coba (Isi Otomatis):
+                        </small>
+                        <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                            {activeTab === 'pengguna' ? (
+                                DUMMY_PENGGUNA.map((acc) => (
+                                    <button
+                                        key={acc.role}
+                                        type="button"
+                                        onClick={() =>
+                                            setFormData((prev) => ({
+                                                ...prev,
+                                                username: acc.email,
+                                                password: acc.password
+                                            }))
+                                        }
+                                        style={{
+                                            fontSize: '12px',
+                                            padding: '5px 10px',
+                                            borderRadius: '6px',
+                                            border: '1px solid #cbd5e1',
+                                            background: '#f8fafc',
+                                            cursor: 'pointer'
+                                        }}
+                                    >
+                                        {acc.label}
+                                    </button>
+                                ))
+                            ) : (
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setFormData((prev) => ({
+                                            ...prev,
+                                            nik: DUMMY_JEMAAT[0].nik,
+                                            tanggalLahir: DUMMY_JEMAAT[0].raw_tgl
+                                        }))
+                                    }
+                                    style={{
+                                        fontSize: '12px',
+                                        padding: '5px 10px',
+                                        borderRadius: '6px',
+                                        border: '1px solid #cbd5e1',
+                                        background: '#f8fafc',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    Jemaat Dummy (Maria)
+                                </button>
+                            )}
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>

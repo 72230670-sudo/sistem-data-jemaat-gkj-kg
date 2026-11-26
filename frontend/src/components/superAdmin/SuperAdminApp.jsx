@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { supabase } from '../../lib/supabaseClient'
 import {
   addFamily,
   addMember,
@@ -17,6 +19,7 @@ import DetailJemaatModal from './DetailJemaatModal.jsx'
 import JemaatFormModal from './JemaatFormModal.jsx'
 
 export default function SuperAdminApp() {
+  const navigate = useNavigate()
   const [data, setData] = useState(() => loadMasterData())
   // Menu utama: 'dashboard' (Dashboard Statistik), 'daftar' (Data Jemaat), & 'keluarga' (Data Keluarga)
   const [activeMenu, setActiveMenu] = useState('dashboard')
@@ -29,6 +32,17 @@ export default function SuperAdminApp() {
 
   // Toast State
   const [toast, setToast] = useState(null)
+
+  async function handleLogout() {
+    localStorage.removeItem('dummyUserSession')
+    localStorage.removeItem('jemaatSession')
+    try {
+      await supabase.auth.signOut()
+    } catch {
+      // Abaikan jika sesi aktif hanya berasal dari akun dummy lokal
+    }
+    navigate('/login')
+  }
 
   function showToast(message, type = 'success') {
     setToast({ message, type })
@@ -173,6 +187,15 @@ export default function SuperAdminApp() {
               <span>Super Admin</span>
             </div>
           </div>
+
+          <button
+            type="button"
+            className="sa-logout-btn"
+            onClick={handleLogout}
+          >
+            <span>🚪</span>
+            <span>Logout</span>
+          </button>
         </div>
       </aside>
 

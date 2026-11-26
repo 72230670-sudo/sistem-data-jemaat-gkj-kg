@@ -127,6 +127,29 @@
   justify-content: center;
 }
 
+.sa-logout-btn {
+  margin-top: 10px;
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  background-color: rgba(239, 68, 68, 0.14);
+  color: #fca5a5;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.sa-logout-btn:hover {
+  background-color: #dc2626;
+  color: #ffffff;
+}
+
 .sa-sidebar-footer {
   padding: 16px 14px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
